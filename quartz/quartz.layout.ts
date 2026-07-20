@@ -6,11 +6,17 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [],
+  // SITE_BASE_URL must match wherever the Astro site is actually served. These
+  // were hardcoded to the bare domain, which on staging sent readers to the OLD
+  // site instead of the one they were browsing. Set in .github/workflows/deploy.yml.
   footer: Component.Footer({
-    links: {
-      Home: "https://monishver11.github.io",
-      Blog: "https://monishver11.github.io/blog/",
-    },
+    links: (() => {
+      const site = process.env.SITE_BASE_URL ?? "https://monishver11.github.io/site-v2"
+      return {
+        Home: site,
+        Blog: `${site}/blog/`,
+      }
+    })(),
   }),
 }
 

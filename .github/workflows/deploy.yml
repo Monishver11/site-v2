@@ -19,6 +19,8 @@ env:
   # the domain root, set both to empty/root values and remove the fix-base step.
   BASE_PATH: /site-v2
   NOTES_BASE_URL: monishver11.github.io/site-v2/notes
+  # Used by quartz.layout.ts for the notes footer links back to the main site.
+  SITE_BASE_URL: https://monishver11.github.io/site-v2
 
 jobs:
   build:

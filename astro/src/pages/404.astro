@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Page not found · Monishver Chandrasekaran"
+  description="That page does not exist."
+>
+  <section class="head">
+    <h1>Page not found</h1>
+    <p class="sub">That page does not exist, or was never written</p>
+    <hr class="flourish" />
+  </section>
+
+  <p class="empty">
+    Some posts link ahead to writing that has not landed yet. If you followed
+    one of those, it is not lost, it simply does not exist.
+  </p>
+
+  <p class="redirect">
+    Taking you to the <a href="/">About page</a> in
+    <span id="countdown">10</span> seconds.
+  </p>
+</Base>
+
+<script is:inline>
+  // Progressive enhancement: the link above works without JS, this just makes
+  // the wait automatic. prefers-reduced-motion readers are not affected since
+  // there is no animation, only a number.
+  (function () {
+    var el = document.getElementById("countdown");
+    var left = 10;
+    var timer = setInterval(function () {
+      left -= 1;
+      if (el) el.textContent = String(left);
+      if (left <= 0) {
+        clearInterval(timer);
+        window.location.href = "/";
+      }
+    }, 1000);
+  })();
+</script>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .sub {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    max-width: 34rem;
+    margin: 2rem auto 0;
+  }
+  .redirect {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+</style>

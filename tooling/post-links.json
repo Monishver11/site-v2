@@ -1,0 +1,132 @@
+{
+  "_comment": [
+    "Curated link graph for the vault post stubs. Hand-built by reading the",
+    "corpus inventory (titles, dates, categories) rather than by term matching.",
+    "",
+    "threads: ordered reading sequences. Each member gets prev/next links.",
+    "  This is what makes the graph navigable instead of a hairball: a cluster",
+    "  of N posts gets N-1 edges, not N*(N-1)/2.",
+    "bridges: conceptual links ACROSS threads, bidirectional. These are the",
+    "  edges that make the graph worth having, e.g. kernel-trick <-> svm.",
+    "zettels: zettel slug -> posts it should link to, bidirectional.",
+    "",
+    "Explicit /blog/ links already present in a post body are merged in",
+    "automatically by make_stubs.py; they do not need repeating here.",
+    "Edit freely, then re-run: python3 tooling/make_stubs.py"
+  ],
+
+  "threads": {
+    "Prerequisites": [
+      "preface-ml", "intro-to-ml", "ml-history", "linear-algebra",
+      "multivariate-calculus", "probability-1", "probability-2"
+    ],
+    "Learning setup": ["supervised-learning", "erm"],
+    "Optimization": [
+      "gradient-descent", "gd-convergence", "gd-tips", "sgd", "sgd-tips",
+      "subgradient"
+    ],
+    "Loss and regularization": [
+      "loss-functions", "regularization", "l1-l2-reg-indepth"
+    ],
+    "Support vector machines": [
+      "max-margin-classifier", "svm", "dual-problem", "svm-dual-problem",
+      "svm-solution-span-of-data"
+    ],
+    "Kernels": ["feature-maps", "kernel-trick"],
+    "Probabilistic modeling": [
+      "probabilistic-modeling", "mle", "generative-models",
+      "nb-continuous-features", "multivariate-gnb"
+    ],
+    "Bayesian methods": [
+      "bayesian-ml", "bayes-point-estimate", "bayes-decision-theory",
+      "bayes-conditional-models", "gaussian-regression"
+    ],
+    "Online learning": [
+      "online-learning", "wma", "rwm", "ewa", "doubling-trick", "fpl",
+      "fpl-proof", "online-to-batch"
+    ],
+    "Multiclass": ["multiclass", "multiclass-loss", "multiclass-svm"],
+    "Structured prediction": [
+      "structured-prediction", "structured-perceptron-svm"
+    ],
+    "Decision trees": ["decision-trees", "decision-trees-classification"],
+    "Ensembles": [
+      "intro-to-ensemble-methods", "bagging", "random-forest", "adaboost"
+    ],
+    "Gradient boosting": [
+      "fsam", "intro-gradient-boosting", "gradient-boosting",
+      "binomial-boost", "gb-in-practice"
+    ],
+    "Big data systems": [
+      "big-data-1-intro", "big-data-2-storage", "big-data-3-hdfs",
+      "big-data-4-mapreduce", "big-data-5-mr-dp", "big-data-7-hive",
+      "big-data-8-hbase", "big-data-9-zookeeper", "big-data-10-kafka",
+      "big-data-11-flink", "spark-job"
+    ],
+    "GPU fundamentals": [
+      "gpu-intro", "gpu-notes", "aleksagordic-gpu-blog-notes"
+    ],
+    "GEMM": ["simons-gemm-notes", "gemm-colfax-1"],
+    "CuTe": ["cute", "fa3-cute"],
+    "FlashAttention 3": [
+      "fa3-worklog", "fa3-k1", "fa3-k2", "fa3-k3", "fa3-k4"
+    ],
+    "vLLM work": [
+      "silu-mul-fp8-block-quant-kernel-vllm",
+      "silu-mul-fp8-block-quant-compile-vllm",
+      "eagle-test-dp"
+    ],
+    "MLP by hand": ["mlp-derivatives", "mlp-fw-bwd"]
+  },
+
+  "bridges": [
+    ["erm", "supervised-learning", "ERM formalises the setup"],
+    ["erm", "loss-functions", "the loss is what ERM minimises"],
+    ["erm", "gradient-descent", "how the empirical risk actually gets minimised"],
+    ["regularization", "l1-l2-reg-indepth", "the nuanced follow-up"],
+    ["regularization", "max-margin-classifier", "max margin is L2 regularisation in disguise"],
+    ["subgradient", "svm", "hinge loss is non-differentiable, hence subgradients"],
+    ["feature-maps", "svm", "why SVMs need nonlinear features"],
+    ["kernel-trick", "svm", "the kernel trick applied to the SVM dual"],
+    ["kernel-trick", "dual-problem", "the dual is what makes kernels possible"],
+    ["svm-solution-span-of-data", "kernel-trick", "representer-theorem flavour of the same idea"],
+    ["mle", "probabilistic-modeling", "MLE as the estimation step"],
+    ["bayesian-ml", "probabilistic-modeling", "the Bayesian alternative to point estimates"],
+    ["bayes-decision-theory", "generative-models", "decision theory over a generative model"],
+    ["gaussian-regression", "bayesian-ml", "Bayesian treatment of linear regression"],
+    ["online-to-batch", "erm", "converting regret bounds into risk bounds"],
+    ["rwm", "wma", "the randomised version"],
+    ["ewa", "wma", "continuous weighting of the same idea"],
+    ["fpl-proof", "fpl", "the proof worked through"],
+    ["multiclass-svm", "svm", "the multiclass generalisation"],
+    ["structured-prediction", "multiclass-svm", "structured output as many-class"],
+    ["adaboost", "fsam", "AdaBoost is forward stagewise additive modelling"],
+    ["gradient-boosting", "fsam", "gradient boosting as FSAM with a gradient step"],
+    ["random-forest", "bagging", "random forests are bagging plus feature sampling"],
+    ["random-forest", "decision-trees", "the base learner"],
+    ["adaboost", "decision-trees", "stumps as weak learners"],
+    ["gb-in-practice", "gradient-boosting", "theory into practice"],
+    ["mlp-derivatives", "multivariate-calculus", "the calculus these derivations rely on"],
+    ["mlp-fw-bwd", "sgd", "what the backward pass feeds"],
+    ["spark-job", "big-data-4-mapreduce", "Spark against the MapReduce model"],
+    ["transformer-block-accounting", "fa3-worklog", "the FLOP counts FA3 is optimising"],
+    ["transformer-block-accounting", "llmr1", "model-level accounting"],
+    ["fa3-cute", "gemm-colfax-1", "WGMMA, the same hardware path"],
+    ["fa3-k4", "gemm-colfax-1", "K4 is the WGMMA kernel"],
+    ["simons-gemm-notes", "gpu-intro", "GEMM as the first real optimisation target"],
+    ["silu-mul-fp8-block-quant-kernel-vllm", "gpu-notes", "kernel-level work on the same hardware model"],
+    ["wrapping-ml-basics", "preface-ml", "bookends the ML foundations series"],
+    ["wrapping-ml-basics", "gb-in-practice", "where the series left off"],
+    ["rl-intro", "supervised-learning", "how the RL setup differs from supervised learning"],
+    ["ds1", "big-data-1-intro", "distributed systems under the big data stack"]
+  ],
+
+  "zettels": {
+    "gpu-memory-hierarchy": [
+      "gpu-intro", "gpu-notes", "aleksagordic-gpu-blog-notes",
+      "simons-gemm-notes"
+    ],
+    "cute-layouts": ["cute", "fa3-cute", "fa3-k1"],
+    "online-softmax": ["fa3-k2", "fa3-worklog"]
+  }
+}

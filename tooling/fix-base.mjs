@@ -34,3 +34,8 @@ for (const file of walk(dist)) {
   }
 }
 console.log(`rewrote ${count} files for base ${base}`);
+
+/* NOTE: no pass is needed over /notes for outbound blog links. Quartz treats a
+   root-relative href as a VAULT-internal path and rewrites it (a stub linking
+   to /blog/x/ came out as ../blog/x/, i.e. /notes/blog/x/), so stubs use
+   absolute URLs instead. See tooling/make_stubs.py BLOG_BASE. */

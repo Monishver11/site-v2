@@ -1,0 +1,406 @@
+---
+title: "LLMR - Lecture 1"
+date: 2026-01-24
+description: "LLM Reasoners Course at NYU Courant - Personal Notes 1"
+tags: []
+category: "GPU & Performance"
+---
+## **Course Overview**
+
+**Goals of this course:** Understand how a language model works all the way down. Build it from scratch to really learn this.
+
+According to Percy Liang, three important things to know:
+- **Mechanics:** how things work (Transformer architecture, model parallelism on GPUs, etc.)
+- **Mindset:** squeezing the most out of the hardware, taking scale seriously
+- **Intuitions:** which data and modeling decisions yield good accuracy
+
+## **Language Models**
+
+**Language models:** place a distribution $P(w)$ over strings $w$ in a language.
+
+**Autoregressive models:** 
+
+$$P(w) = P(w_1) \cdot P(w_2|w_1) \cdot P(w_3|w_1, w_2) \cdots$$
+
+### **N-gram Models**
+
+**N-gram models:** distribution of next word is a categorical conditioned on previous $n-1$ words
+
+$$P(w_i|w_1, \ldots, w_{i-1}) = P(w_i|w_{i-n+1}, \ldots, w_{i-1})$$
+
+**Markov property:** only consider a few previous words
+
+**Example:** I visited San _____
+
+- 2-gram: $P(w \mid \text{San})$
+- 3-gram: $P(w \mid \text{visited San})$
+- 4-gram: $P(w \mid \text{I visited San})$
+
+**Limitations:**
+- N-gram LLMs don't generalize or abstract over related words
+- Don't handle contexts beyond a few words
+
+### **Neural Language Models**
+
+**Feedforward networks:** Language models based purely on feedforward networks can abstract over words (using embeddings), but still fail to use large context.
+
+**Solution:** Need to handle more context
+- RNNs or CNNs can do this
+- Current best: **Transformers using self-attention**
+
+## **Transformers**
+
+### **Attention Mechanism**
+
+**Attention:** method to access arbitrarily far back in context from this point.
+
+**Components:**
+- **Keys:** embedded versions of the sentence
+- **Query:** what we want to find
+
+**Attention Process:**
+
+**Step 1:** Compute scores for each key
+$$s_i = k_i^T q$$
+
+**Step 2:** Softmax the scores to get probabilities $\alpha$
+
+**Step 3:** Compute output values by multiplying embeddings by alpha and summing
+$$\text{result} = \sum_i \alpha_i e_i$$
+
+### **Making Attention More Flexible**
+
+We can make attention more peaked by not setting keys equal to embeddings. Introduce weight matrices for keys.
+
+### **Attention, Formally**
+
+**Original "dot product" attention:** 
+$$s_i = k_i^T q$$
+
+**Scaled dot product attention:** 
+$$s_i = k_i^T W q$$
+
+**Equivalent to having two weight matrices:** 
+$$s_i = (W^K k_i)^T (W^Q q)$$
+
+**Reference:** Jay Alammar, [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
+
+### **Self-Attention**
+
+**Self-attention:** every word is both a key and a query simultaneously
+
+**Matrices:**
+- $Q$: seq_len × $d$ matrix ($d$ = embedding dimension = 2 for these slides)
+- $K$: seq_len × $d$ matrix
+
+**Scores:** $S = QK^T$ where $S_{ij} = q_i \cdot k_j$
+
+Dimensions: seq_len × seq_len = (seq_len × $d$) × ($d$ × seq_len)
+
+**Final step:** softmax to get attentions $A$, then output is $AE$
+
+*Technically it's $A(EW^V)$, using a values matrix $V = EW^V$
+
+TODO: Add pics from slides 48, 49, 50, 51, 52
+
+### **Attention Formalization**
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+
+where:
+- $Q = EW^Q$ (queries)
+- $K = EW^K$ (keys)  
+- $V = EW^V$ (values)
+
+**Normalizing by $\sqrt{d_k}$:** helps control the scale of the softmax, makes it less peaked
+
+**Multi-head attention:** This is just one head of self-attention — produce multiple heads via randomly initialized parameter matrices
+
+## **Architecture**
+
+TODO: Add pics for slides 53, 54
+
+### **Transformer Block Structure**
+
+**Q: In general, a transformer block contains encoder and decoder right? Here what we're discussing is the encoder part right?**
+
+**A:** Not quite. What we're discussing here is a **decoder-only** architecture used for language modeling. The original Transformer (Vaswani et al., 2017) had both encoder and decoder blocks, but modern LLMs like GPT use only decoder blocks stacked together. Each decoder block contains:
+- Causal (masked) multi-head self-attention with RoPE
+- Layer normalization
+- Position-wise feed-forward network
+- Residual connections (Add operations)
+
+The key difference from an encoder is the **causal masking** in attention, which prevents positions from attending to future positions.
+
+### **Transformer Block Components**
+
+A single Transformer block consists of:
+
+1. **Input:** Token embeddings (seq_len × $d_{model}$)
+
+2. **Causal Multi-Head Self-Attention with RoPE:**
+   - Apply RoPE to queries and keys
+   - Compute attention with causal mask
+   - Multi-head attention allows different heads to learn different attention patterns
+
+3. **Add & Norm:** Residual connection + Layer Normalization
+
+4. **Position-Wise Feed-Forward Network:**
+   $$\text{FFN}(x) = \text{SwiGLU}(x, W_1, W_2, W_3) = W_2(\text{SiLU}(W_1 x) \odot W_3 x)$$
+   - Takes each position independently
+   - Typically uses a larger hidden dimension $d_{ff}$
+
+5. **Add & Norm:** Another residual connection + Layer Normalization
+
+6. **Output:** Transformed representations (seq_len × $d_{model}$)
+
+These blocks are stacked `num_layers` times, with the output of one block feeding into the next.
+
+TODO: Add pics from slides 55, 56
+
+### **Dimensions**
+
+**Main vector size:** $d_{model}$
+
+**Queries/keys:** $d_k$, always smaller than $d_{model}$, often $d_{model}/h$ (number of heads)
+
+**Values:** separate dimension $d_v$, output is multiplied by $W^O$ which is $(d_v \times h) \times d_{model}$ so we can get back to $d_{model}$
+
+**FFN:** can use a higher latent dimension $d_{ff}$
+
+$$\text{FFN}(x) = \text{SwiGLU}(x, W_1, W_2, W_3) = W_2(\text{SiLU}(W_1 x) \odot W_3 x)$$
+
+**Typical configurations (from GPT-3):**
+
+| Model | $n_{params}$ | $n_{layers}$ | $d_{model}$ | $n_{heads}$ | $d_{head}$ |
+|-------|--------------|--------------|-------------|-------------|------------|
+| GPT-3 Small | 125M | 12 | 768 | 12 | 64 |
+| GPT-3 Medium | 350M | 24 | 1024 | 16 | 64 |
+| GPT-3 Large | 760M | 24 | 1536 | 16 | 96 |
+| GPT-3 XL | 1.3B | 24 | 2048 | 24 | 128 |
+| GPT-3 2.7B | 2.7B | 32 | 2560 | 32 | 80 |
+| GPT-3 6.7B | 6.7B | 32 | 4096 | 32 | 128 |
+| GPT-3 13B | 13.0B | 40 | 5140 | 40 | 128 |
+| GPT-3 175B | 175.0B | 96 | 12288 | 96 | 128 |
+
+### **FLOPs Distribution**
+
+As models scale, the proportion of FLOPs changes:
+- **Smaller models (760M):** ~35% MHA, ~44% FFN, ~15% attention computation, ~6% logits
+- **Larger models (175B):** ~17% MHA, ~80% FFN, ~3% attention computation, ~0.3% logits
+
+The FFN becomes increasingly dominant in larger models.
+
+## **Transformer Language Modeling**
+
+### **Training**
+
+$$P(w|\text{context}) = \text{softmax}(Wh_i)$$
+
+where $W$ is a (vocab_size) × (hidden_size) matrix
+
+**Training setup:**
+- Input is a sequence of words
+- Output is those words shifted by one
+- Allows us to train on predictions across several timesteps simultaneously (similar to batching but this is NOT what we refer to as batching)
+
+**Loss:**
+$$\text{loss} = -\log P(w^*|\text{context})$$
+
+**Total loss:** sum of negative log likelihoods at each position
+
+**Important:** Parallel inference across several tokens at training time, but at decoding time, tokens are generated one at a time.
+
+TODO: Add pics from slide 61
+
+### **Batched LM Training: Detailed Explanation**
+
+**Batching** in LM training refers to processing multiple sequences simultaneously, which is different from the parallel processing of tokens within a single sequence.
+
+**Mechanism:**
+
+1. **Batch Dimension:** We process multiple independent sequences at once
+   - Each sequence in the batch is a separate training example
+   - Sequences are typically padded to the same length for efficient matrix operations
+
+2. **Why Batching?**
+   - **Computational Efficiency:** GPUs are optimized for parallel matrix operations. Processing one sequence at a time would waste GPU capacity
+   - **Gradient Stability:** Averaging gradients over multiple examples provides more stable updates
+   - **Throughput:** We can process many more tokens per second
+
+3. **The Flow:**
+   ```
+   Input Batch: [seq1, seq2, seq3, ...]
+   Shape: (batch_size, seq_len, d_model)
+   
+   → Each sequence processes through transformer independently
+   → Attention within each sequence (not across sequences)
+   → Loss computed for each sequence
+   → Losses averaged across batch
+   ```
+
+4. **Two Levels of Parallelism:**
+   - **Within-sequence parallelism:** All tokens in a sequence are processed simultaneously during forward pass (enabled by self-attention)
+   - **Across-sequence parallelism:** Multiple sequences processed at once (batching)
+
+5. **Practical Considerations:**
+   - Batch size is limited by GPU memory
+   - Larger batches → more stable gradients but slower iteration
+   - Gradient accumulation can simulate larger batches
+
+This is distinct from the token-level parallelism during training where we predict all positions simultaneously using teacher forcing.
+
+### **A Small Problem with Transformer LMs**
+
+This Transformer LM as we've described it will easily achieve perfect accuracy. Why?
+
+With standard self-attention: "I" attends to "saw" and the model is "cheating". How do we ensure that this doesn't happen?
+
+**Solution: Attention Masking**
+
+We want to mask out everything in red (an upper triangular matrix)
+
+```
+Query words:     <s>  I  saw  the  dog
+Key words:  <s>  [ ]  [X] [X]  [X]  [X]
+            I    [ ]  [ ] [X]  [X]  [X]
+            saw  [ ]  [ ] [ ]  [X]  [X]
+            the  [ ]  [ ] [ ]  [ ]  [X]
+            dog  [ ]  [ ] [ ]  [ ]  [ ]
+```
+
+Where [X] represents masked (forbidden) attention positions.
+
+## **Positional Encodings**
+
+### **Why Do We Need Them?**
+
+**Problem:** Self-attention is permutation-invariant without positional information. We need to distinguish:
+- "B followed by 3 As" from other arrangements
+- Position-dependent patterns
+
+### **Absolute Position Encodings (BERT, etc.)**
+
+Encode each sequence position as an integer, add it to the word embedding vector:
+
+$$\text{input}_i = \text{emb}(\text{word}_i) + \text{emb}(\text{position}_i)$$
+
+**Why does this work?** The model learns to use the positional information through training. The embeddings can learn to represent position-dependent features.
+
+### **Sinusoidal Position Encodings (Vaswani et al., 2017)**
+
+Alternative from Vaswani et al.: sines/cosines of different frequencies
+
+**Property:** Closer words get higher dot products by default
+
+The encoding uses different frequencies for different dimensions:
+
+$$PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)$$
+
+$$PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)$$
+
+TODO: Add pics from slide 66, 67
+
+### **RoPE (Rotary Position Embedding) - Jianlin Su et al., 2021**
+
+**Core Idea:** Encode positional information by rotating the embedding vectors by an amount that depends on their position.
+
+**Mechanism:**
+
+1. **Break vector into 2D chunks:** Take the $d$-dimensional vector and treat it as $d/2$ pairs of 2D vectors
+
+2. **Rotation angle:** For position $i$ and dimension pair $k$:
+   $$\theta_{i,k} = \frac{i}{\Theta^{(2k-2)/d}}$$
+   
+   where $\Theta$ is a base value (typically 10000)
+
+3. **Rotation matrix:** For each 2D chunk:
+   $$R_k^i = \begin{bmatrix} \cos(\theta_{i,k}) & -\sin(\theta_{i,k}) \\ \sin(\theta_{i,k}) & \cos(\theta_{i,k}) \end{bmatrix}$$
+
+4. **Apply rotation:** Multiply each 2D chunk by its corresponding rotation matrix
+
+**What happens as $i$ increases?** $\theta$ increases → more rotation
+
+**What happens as $k$ increases?** $\theta$ decreases → less rotation per position
+
+**Intuition:** 
+- Initial positions (small $k$) rotate heavily with each position change
+- Later positions (large $k$) rotate slowly
+- This creates a multi-scale positional encoding
+
+TODO: Add pics from slide 68, 69
+
+TODO: Add pics from slide 71, 72
+
+**How does RoPE help encode position?**
+
+The key insight is that RoPE encodes **relative** position information through the geometry of rotations:
+
+1. **Relative position through rotation difference:** When computing attention between positions $i$ and $j$, the dot product $q_i^T k_j$ naturally incorporates the rotation difference $(i-j)$
+
+2. **Scale-dependent locality:** Different frequency bands ($k$ values) capture different scales of positional relationships:
+   - Low $k$: sensitive to immediate neighbors
+   - High $k$: captures long-range dependencies
+
+3. **Extrapolation capability:** The rotational nature allows the model to generalize to positions beyond those seen during training (within limits)
+
+### **Where are PEs used?**
+
+**Classical Vaswani et al. Transformer (2017):** Added to input
+- PE applied once at the bottom of the network
+- Affects all subsequent layers
+
+**Modern practice:** Apply RoPE to Qs and Ks right before self-attention
+- PE applied within each attention layer
+- Only affects the attention computation, not the value vectors
+- Better preserves semantic information in embeddings
+
+**How do these methods differ?**
+- Absolute PEs: single application, affects all operations
+- RoPE: applied multiple times, only affects attention mechanism, encodes relative positions
+
+### **RoPE Interpolation and Extrapolation Properties**
+
+**Position Interpolation (PI):** If RoPE is trained with encodings up to token $L$, you can expand it to $L'$ by scaling:
+
+$$\theta_{i,k} = \frac{i \cdot (L/L')}{\Theta^{(2k-2)/d}}$$
+
+This compresses the positional space, making the model think longer sequences are actually shorter.
+
+**Wavelength Concept:** The number of tokens needed to do a full rotation at dimension pair $k$:
+
+$$\lambda_k = \frac{2\pi}{\theta_k} = 2\pi \Theta^{2k/|D|}$$
+
+**YaRN (Yet another RoPE extensioN method) - Bowen Peng et al., 2023:**
+
+Two key ideas:
+
+1. **Frequency-dependent interpolation:** 
+   - If wavelength is small ($k$ is large): rotations are fast, don't use position interpolation
+   - If wavelength is large ($k$ is small): rotations are slow, use position interpolation
+   - This preserves high-frequency (local) information while extending low-frequency (global) range
+
+2. **Temperature scaling:** Introduce a temperature $t$ on the attention computation:
+   $$\text{Attention} = \text{softmax}\left(\frac{QK^T}{t\sqrt{d_k}}\right)V$$
+   
+   This compensates for distribution shifts when extending context length
+
+**Why does this work?** 
+- Different frequency bands in RoPE capture different types of positional relationships
+- Low frequencies (small $k$): long-range dependencies, can be interpolated
+- High frequencies (large $k$): local patterns, should be preserved
+- Temperature adjustment maintains attention entropy at extended lengths
+
+### **NoPE (No Position Embedding) - Kazemnejad et al., 2023**
+
+**Question:** Do we *actually* need positional encodings?
+
+**Surprising finding:** With causal masking, transformers can learn positional information implicitly!
+
+**Key difference:**
+- **Full attention:** No inherent positional information → requires explicit PEs
+- **Causal mask:** The mask structure itself provides positional information
+  - Each position can only attend to earlier positions
+  - The attention pattern reveals relative positions
+
+**Result:** In some settings, models can work without explicit positional encodings, though most modern LLMs still use them for better performance.

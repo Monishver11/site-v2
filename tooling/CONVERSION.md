@@ -29,20 +29,41 @@ prefix; Astro lowercases it for the URL). Referenced images are copied to
    italic); Bootstrap row/col wrapper divs are unwrapped (markdown inside raw
    HTML blocks is otherwise not parsed); deep-indented image lines are
    dedented (4+ spaces = code block in markdown).
-5. Remaining liquid tags are dropped and printed to the console - check that
-   output and handle anything unusual by hand.
+5. `{% post_url X %}` resolves to `/blog/<slug>/`, by SLUG not filename (so a
+   wrong date in the reference still resolves). Old `/blog/:year/:title/`
+   permalinks, including the absolute and localhost forms, are rewritten too.
+6. Display-math delimiters are normalised: every unpaired `$$` is put on its
+   own line. remark-math opens/closes a flow block ONLY on a line that is
+   exactly `$$`, and the corpus constantly shares that line (`...text:  $$`,
+   `$$\hat{y} =`, `- $$`, `t$$`). Left alone, the pairing slips and following
+   PROSE gets parsed as math.
+7. Bare `_` inside `\text{}` is escaped (KaTeX rejects it, MathJax allowed it).
+8. `[label]()` becomes `[label](/404)`.
+9. Remaining liquid tags AND `{{ }}` expressions are dropped and printed to the
+   console - check that output and handle anything unusual by hand.
 
 ## Manual checks after converting
 
-- Load the post, run in devtools: `document.querySelectorAll('.katex-error').length`
-  (want 0) and eyeball images/captions.
+Mechanical checks, all of which should be zero. Run against `dist/` after a build:
+
+- `.katex-error` count.
+- Leftover liquid: `grep -rl '{%' src/content/blog/`. IMPORTANT - this is the
+  only check that catches a dropped `figure.liquid`. A missing-image check
+  looks for "referenced but absent" and is blind to "dropped entirely".
+- Dead internal `/blog/` links, and `/img/` references with no file on disk.
+- Frontmatter that fails to parse (use the js-yaml in astro/node_modules).
+- Swallowed prose: scan each rendered node's `<annotation encoding="application/x-tex">`
+  for markdown emphasis or paragraph breaks inside math. Catches math that
+  silently ate prose while still parsing, which raises no error.
+
+Then eyeball a few posts in the browser for images and captions.
+
 - Multi-column figure rows (3-up images) stack vertically after conversion;
   acceptable, revisit per post if a grid matters.
-- Posts with unusual liquid (video, audio, jupyter embeds) need hand-porting
-  of those bits.
 - Sidenotes are new-site-only: add `:sidenote[text]` inline where wanted.
   Re-running the converter overwrites the file, so re-add any sidenotes (or
-  convert once, then edit).
+  convert once, then edit). Prefer fixing recurring problems as general rules
+  in the converter over editing generated markdown, which gets overwritten.
 
 ## Styling contract the converter relies on
 

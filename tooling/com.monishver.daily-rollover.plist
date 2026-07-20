@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.monishver.daily-rollover</string>
+
+  <!-- Points at a wrapper outside ~/Downloads: launchd is not permitted to
+       execute scripts stored there (macOS TCC). The wrapper runs the real
+       script, which stays version-controlled in the repo at tooling/. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/monishver/Library/Scripts/site-v2/daily-rollover-wrapper.sh</string>
+  </array>
+
+  <!-- 4:00am local. Writing past midnight still belongs to the previous day. -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key><integer>4</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+
+  <!-- If the Mac was asleep or off at 4am, run once on next wake. The script
+       is idempotent and catches up on any number of missed days. -->
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/monishver/Downloads/site-v2/vault/daily/.rollover.stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/monishver/Downloads/site-v2/vault/daily/.rollover.stderr.log</string>
+</dict>
+</plist>

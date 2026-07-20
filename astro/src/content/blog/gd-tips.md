@@ -1,0 +1,371 @@
+---
+title: "Gradient Descent and Second-Order Optimization - A Thorough Comparison"
+date: 2024-12-28
+description: "An in-depth exploration of Gradient Descent (GD) and Second-Order Gradient Descent (2GD), focusing on convergence behavior, mathematical derivations, and performance differences."
+tags: [ML]
+category: "ML Theory"
+---
+<!-- This post is based on notes derived from a [Stochastic Gradient Descent Tricks](https://leon.bottou.org/publications/pdf/tricks-2012.pdf), detailed and structured for better understanding.
+This text describes two optimization methods for minimizing empirical risk $E_n(f_w)$: **Gradient Descent (GD)** and **Second-Order Gradient Descent (2GD)**(analogous to the PDF's format and notations). -->
+
+The concept discussed below may already be familiar to you, but it might appear a bit different in this blog. This content is adapted from the reference material - [Stochastic Gradient Descent Tricks](https://leon.bottou.org/publications/pdf/tricks-2012.pdf) we received for Gradient Descent (GD) and Stochastic Gradient Descent (SGD) tips, written by [L´eon Bottou](https://leon.bottou.org/). It's a well-written piece with many theoretical aspects that are often overlooked when applying GD in machine learning. To be honest, I still don’t fully grasp all of it, but I hope that as I continue on this learning journey, I’ll come to understand most of it and be able to make sense of it.
+
+This blog post, along with the next one, will serve as my personal notes on the material. Another reason for sharing this content is to familiarize ourselves with the different notations commonly used in machine learning research. Before diving directly into the SGD tips and tricks from the material, I felt it was important to revisit Gradient Descent (GD) as described in the text. In machine learning, the same concepts are often presented using various notations, which can be confusing if you're not prepared.
+
+Think of it this way: just as there is a base language with many different slangs or colloquialisms, in math, the core concepts remain the same, but the notations can vary depending on who’s explaining them or for what purpose. So, consider this as the same concept, expressed in a different notation—another perspective on the same idea. That’s it—let's get started!
+
+
+---
+
+## **1. Gradient Descent (GD)**
+
+#### **Objective**
+
+Minimize the empirical risk $E_n(f_w)$.
+
+#### **Update Rule**
+
+$$
+w_{t+1} = w_t - \gamma \frac{1}{n} \sum_{i=1}^n \nabla_w Q(z_i, w_t),
+$$
+
+where:
+- $w_t$: Current weights at iteration $t$.
+- $\gamma$: Learning rate (a small positive scalar).
+- $\nabla_w Q(z_i, w_t)$: Gradient of the loss function $Q$ with respect to $w_t$ for data point $z_i$.
+
+**Convergence Requirements**:
+- $w_0$ (initial weights) close to the optimum.
+- $\gamma$ small enough.
+  
+**Performance**:
+- Achieves **linear convergence**, meaning the error decreases exponentially with iterations. The convergence rate is denoted as $\rho$, so:
+
+$$
+-\log \rho \sim t,
+$$
+
+where $\rho$ represents the residual error.
+
+---
+
+## **2. Second-Order Gradient Descent (2GD)**
+
+#### **Improvement**
+
+Instead of using a scalar learning rate $\gamma$, introduce a positive definite matrix $\Gamma_t$:
+
+$$
+w_{t+1} = w_t - \Gamma_t \frac{1}{n} \sum_{i=1}^n \nabla_w Q(z_i, w_t).
+$$
+
+- $\Gamma_t$: Approximates the inverse of the Hessian matrix of the cost function at the optimum.
+- The Hessian is the second derivative of the cost function, capturing curvature information.
+
+  
+
+#### **Advantages**
+
+- The algorithm accounts for the curvature of the cost function, leading to more informed updates.
+- When $\Gamma_t$ is exactly the inverse of the Hessian:
+- **Convergence is quadratic**, meaning:
+
+$$
+-\log \log \rho \sim t,
+$$
+
+where the error decreases much faster than linear convergence.
+
+- If the cost function is quadratic and the scaling matrix $\Gamma_t$ is exact, the optimum is reached in **one iteration**.
+
+#### **Assumptions for Quadratic Convergence**
+
+- Smoothness of the cost function.
+- $w_0$ close enough to the optimum.
+
+
+#### **Intuition Behind Quadratic Convergence**
+
+- In GD, the learning rate $\gamma$ is fixed and doesn't adapt to the problem's geometry, leading to slower convergence in certain directions.
+- In 2GD, the matrix $\Gamma_t$ adapts to the curvature of the cost function:
+- Allows larger steps in flat directions.
+- Takes smaller steps in steep directions.
+- This results in significantly faster convergence.
+
+
+---
+
+## **Follow-Up: Gradient Descent and Second-Order Gradient Descent**
+
+
+This below section answers follow-up questions about the convergence behavior of Gradient Descent (GD) and the role of the inverse Hessian in Second-Order Gradient Descent (2GD).
+
+### **1. How does linear convergence in GD lead to exponential error reduction?**
+
+  
+
+#### **Recap of Linear Convergence**
+
+Linear convergence means that the error at iteration $t$ is proportional to the error at iteration $t-1$, scaled by a constant $\rho$:
+
+$$
+\|w_t - w^*\| \leq \rho \|w_{t-1} - w^*\|, \quad \text{where } 0 < \rho < 1.
+$$
+
+  
+
+#### Derivation of Exponential Error Reduction
+
+Let's derive how the error becomes proportional to $\rho^t$ after $t$ iterations:
+
+- From the recurrence relation:
+
+$$
+\|w_t - w^*\| \leq \rho \|w_{t-1} - w^*\|.
+$$
+
+Expanding this iteratively:
+
+$$
+\|w_t - w^*\| \leq \rho (\|w_{t-2} - w^*\|) \leq \rho^2 \|w_{t-2} - w^*\|.
+$$
+
+- Generalizing this pattern:
+
+$$
+\|w_t - w^*\| \leq \rho^t \|w_0 - w^*\|,
+$$
+
+where $\|w_0 - w^*\|$ is the initial error at $t = 0$.
+
+- Since $\rho < 1$, $\rho^t$ decreases exponentially as $t$ increases. This shows the error reduces at an exponential rate in terms of the number of iterations.
+
+
+---
+
+### **2. What is the inverse of the Hessian matrix?**
+
+#### **Hessian Matrix**
+
+The Hessian matrix is a second-order derivative matrix of the cost function $Q(w)$, defined as:
+
+$$
+H = \nabla^2_w Q(w),
+$$
+
+where each entry $H_{ij} = \frac{\partial^2 Q(w)}{\partial w_i \partial w_j}$ captures how the gradient changes with respect to each pair of weights.
+
+  
+
+#### **Inverse of the Hessian**
+
+The inverse of the Hessian, $H^{-1}$, rescales the gradient updates based on the curvature of the cost function:
+
+- In directions where the curvature is steep, $H^{-1}$ reduces the step size.
+- In flatter directions, $H^{-1}$ increases the step size.
+
+
+This adjustment improves convergence by adapting the optimization step to the geometry of the cost function.
+
+---
+
+### **3. How does using the inverse Hessian converge faster?**
+
+  
+
+#### **Faster Convergence with 2GD**
+
+In **Second-Order Gradient Descent (2GD)**:
+
+$$
+w_{t+1} = w_t - H^{-1} \nabla_w Q(w_t).
+$$
+
+This update accounts for the curvature of the cost function.
+
+#### **Quadratic Convergence**
+
+- Near the optimum $w^*$, the cost function can be locally approximated as quadratic:
+
+$$
+Q(w) \approx \frac{1}{2}(w - w^*)^T H (w - w^*),
+$$
+
+where $H$ is the Hessian at $w^*$.
+
+
+- The gradient of the cost is:
+
+$$
+\nabla_w Q(w) = H (w - w^*).
+$$
+
+  
+- Substituting this gradient into the 2GD update:
+
+$$
+w_{t+1} = w_t - H^{-1} H (w_t - w^*).
+$$
+
+
+- Simplifies to:
+
+$$
+w_{t+1} = w^*.
+$$
+
+
+This shows that in the best case (when the cost is exactly quadratic and $H^{-1}$ is exact), the algorithm converges in **one iteration**.
+
+---
+
+
+### **4. Summary of Convergence Behavior**
+
+- **Gradient Descent (GD)**:
+  - Linear convergence: $\|w_t - w^*\| \leq \rho^t \|w_0 - w^*\|$.
+  - Error decreases exponentially at a rate $\rho$, where $\rho$ depends on the learning rate and the condition number of the Hessian.
+
+  
+
+- **Second-Order Gradient Descent (2GD)**:
+  - Quadratic convergence: $\|w_t - w^*\| \sim (\text{error})^2$ at each iteration.
+  - When the cost is quadratic and $H^{-1}$ is exact, the algorithm converges in one step.
+
+
+---
+
+
+## More Details: Linear vs. Quadratic Convergence in Optimization
+
+### **1. Linear Convergence in Gradient Descent**
+
+#### **Key Idea:**
+
+Gradient Descent (GD) decreases the error at a fixed proportion $\rho$ per iteration:
+
+$$
+\|w_t - w^*\| \leq \rho \|w_{t-1} - w^*\|, \quad \text{where } 0 < \rho < 1.
+$$
+
+#### **Step-by-Step Derivation:**
+
+- **Iterative Expansion**: Expanding the recurrence:
+
+$$
+\|w_t - w^*\| \leq \rho^t \|w_0 - w^*\|,
+$$
+
+where $\|w_0 - w^*\|$ is the initial error.
+
+- **Take the Logarithm**: Apply the natural logarithm to both sides:
+
+$$
+\log \|w_t - w^*\| \leq \log (\rho^t \|w_0 - w^*\|).
+$$
+
+
+- **Simplify Using Logarithm Rules**: Using $\log (ab) = \log a + \log b$ and $\log (\rho^t) = t \log \rho$, we get:
+
+$$
+\log \|w_t - w^*\| \leq t \log \rho + \log \|w_0 - w^*\|.
+$$
+
+
+- **Why Does $t \log \rho$ Decrease Linearly?**
+  - The parameter $\rho$ satisfies $0 < \rho < 1$, so $\log \rho < 0$.
+  - As $t$ increases, $t \log \rho$ becomes a larger negative number, reducing the value of $\log \|w_t - w^*\|$.
+  - Since $\log \rho$ is a constant, the term $t \log \rho$ depends **linearly on $t$**:
+
+  $$
+  t \log \rho = (\text{constant}) \cdot t, \quad \text{where constant} = \log \rho.
+  $$
+
+  
+
+- **Interpretation of Convergence Rate**:
+  - From the error bound $\|w_t - w^*\| \leq \rho^t \|w_0 - w^*\|$, we see exponential error decay with $t$.
+  - Taking the logarithm leads to a linear relationship in $t$:
+
+$$
+\log \|w_t - w^*\| \sim t \log \rho.
+$$
+
+  - This behavior is summarized as:
+
+$$
+-\log \rho \sim t.
+$$
+
+### **2. Quadratic Convergence in Second-Order Gradient Descent**
+
+#### **Key Idea:**
+
+In Second-Order Gradient Descent (2GD), the error at each step is proportional to the **square** of the error at the previous step:
+
+$$
+\|w_t - w^*\| \sim (\|w_{t-1} - w^*\|)^2.
+$$
+
+
+#### **Step-by-Step Derivation:**
+
+- **Iterative Expansion**: Rewriting the error at step $t$ in terms of the initial error $\|w_0 - w^*\|$:
+
+$$
+\|w_t - w^*\| \sim (\|w_{t-1} - w^*\|)^2 \sim \left((\|w_{t-2} - w^*\|)^2\right)^2 \sim \dots \sim (\|w_0 - w^*\|)^{2^t}.
+$$
+
+Thus:
+
+$$
+\|w_t - w^*\| \sim (\|w_0 - w^*\|)^{2^t}.
+$$
+
+
+- **Take the Logarithm**: Apply the natural logarithm:
+
+$$
+\log \|w_t - w^*\| \sim 2^t \log \|w_0 - w^*\|.
+$$
+
+- **Take Another Logarithm**: To analyze the rate of convergence, take the logarithm again:
+
+$$
+\log \log \|w_t - w^*\| \sim \log (2^t) + \log \log \|w_0 - w^*\|.
+$$
+
+Using $\log (2^t) = t \log 2$, we simplify:
+
+$$
+\log \log \|w_t - w^*\| \sim t + \log \log \|w_0 - w^*\|.
+$$
+
+  
+- **Interpretation of Convergence Rate**:
+  - From the error bound $\|w_t - w^*\| \sim (\|w_0 - w^*\|)^{2^t}$, we see super-exponential error decay.
+  - Taking the logarithm of the logarithm shows linear growth in $t$:
+
+$$
+\log \log \|w_t - w^*\| \sim t.
+$$
+
+- This behavior is expressed as:
+
+$$
+-\log \log \rho \sim t.
+$$
+
+---
+
+#### **Summary of Convergence Behavior**
+
+| **Convergence Type**                    | **Error Decay**                                | **Logarithmic Analysis**             |
+|-----------------------------------------|------------------------------------------------|--------------------------------------|
+| **Gradient Descent (GD)**               | $\|w_t - w^*\| \sim \rho^t$                | $\log \|w_t - w^*\| \sim t$      |
+| **Second-Order Gradient Descent (2GD)** | $\|w_t - w^*\| \sim (\|w_0 - w^*\|)^{2^t}$ | $\log \log \|w_t - w^*\| \sim t$ |
+
+---
+
+The next blog continues from this one, where we’ll explore SGD (Stochastic Gradient Descent) along with some helpful tips and analogies. We will use the same notations as those introduced in this blog. Keep learning, and head on to the next post!
+  

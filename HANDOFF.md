@@ -35,19 +35,35 @@ STAGING IS LIVE: https://monishver11.github.io/site-v2/ (repo github.com/Monishv
 
 Done and verified live: about page, blog pipeline with 3 ported posts (kernel-trick, sgd, fa3-cute), math (KaTeX, 0 errors), sidenotes, giscus + Buttondown on posts, thoughts (real data, both tabs), reads/reviews/book placeholder pages, Quartz notes with 4 seed notes (graph/search/backlinks/wikilinks working), staging deploy green.
 
+## Daily notes (step 1, DONE 2026-07-20)
+
+The writing loop: one running file `vault/daily/today.md`, archived to `vault/daily/<date>.md` by `tooling/daily-rollover.sh`, which also reseeds today.md from `vault/templates/daily.md` and regenerates its Goals section from `vault/goals.md`.
+
+**THE ROLLOVER IS MANUAL. There is no scheduled job, and this is deliberate.** A launchd agent cannot read file contents under `~/Downloads` (macOS TCC), so a scheduled run fails with "Operation not permitted"; an interactive terminal can, so running it by hand works. This was tested, not assumed: the job was installed, it failed, it was removed, and `~/Library/LaunchAgents` is clean. Do not re-attempt scheduling while the project lives in `~/Downloads`. `tooling/com.monishver.daily-rollover.plist` is kept unused for the day the project moves.
+
+The script is idempotent with catch-up, so running it repeatedly is a no-op and forgetting for a week still archives correctly. Full operational detail in `vault/daily/README.md`; full decision trail in progress.md under 2026-07-20.
+
 ## Next steps, in order (user-approved sequence)
 
-1. Obsidian setup: user points Obsidian at vault/ (their step). Then scaffold: daily-note template in vault/templates, sensible .obsidian defaults. Then the 12am housekeeping job (archive today's daily note, reset the running note) as a local launchd job. Write the script and SHOW THE USER before installing anything scheduled.
-2. Port the remaining ~91 posts with tooling/convert_post.py (batch, then spot-check per CONVERSION.md; posts with video/audio/jupyter liquid need hand attention). Copy needed images automatically happens.
-3. Build the Book section: ordered manifest of the ML Theory posts (parts/chapters, sidebar tree, prev/next). User wants involvement in the ordering.
-4. Reads content: user will supply their list (reads.json holds it: title/href/by/note fields).
-5. Weekly review automation: draft from daily logs for user to edit, publish to /reviews.
-6. Prod flip when port is complete: set BASE_PATH and NOTES_BASE_URL to root values, remove fix-base step, move Pages to the main repo. Old permalink format was /blog/:year/:title/ so add redirects or match slugs when flipping (current new format is /blog/<slug>/, NOT year-based; decide redirect strategy with user).
+1. ~~Obsidian setup~~ DONE, see above. Remaining nits: user should replace the placeholder goal in `vault/goals.md` with real goals.
+2. ~~Port the remaining posts~~ DONE 2026-07-20. All 93 posts are in `astro/src/content/blog/`. Build is 107 pages with 0 KaTeX errors, 0 dead links, 0 missing images, 0 leftover liquid. The converter gained 8 fixes in the process (post_url resolution, YAML-safe frontmatter, old-permalink rewriting, display-delimiter normalization, multi-line figure.liquid, \text underscore escaping, empty-link -> /404). See progress.md 2026-07-20 for the full list and the traps.
+   NOTE: the old warning here about "video/audio/jupyter liquid needing hand attention" was WRONG. There is none of that in the corpus. Removed.
+3. ~~Zettel~~ DONE 2026-07-20. 93 stubs in `vault/posts/` with **216 curated links across 92 of them** (only nyu-grad isolated, correctly). Graph, backlinks, search verified.
+   The link graph lives in `tooling/post-links.json` (threads = ordered reading sequences giving prev/next; bridges = conceptual pairs with reasons; zettels). Edit that file and re-run `python3 tooling/make_stubs.py`.
+   **Regenerating is safe**: anything below the `<!-- links below this line are kept when regenerating -->` marker in a stub is preserved, so add your own links there freely.
+4. Build the Book section: ordered manifest of the ML Theory posts (parts/chapters, sidebar tree, prev/next). User wants involvement in the ordering.
+5. Reads content: user will supply their list (reads.json holds it: title/href/by/note fields).
+6. Weekly review automation: draft from daily logs for user to edit, publish to /reviews.
+7. Prod flip when port is complete: set BASE_PATH and NOTES_BASE_URL to root values, remove fix-base step, move Pages to the main repo. Old permalink format was /blog/:year/:title/ so add redirects or match slugs when flipping (current new format is /blog/<slug>/, NOT year-based; decide redirect strategy with user).
 
 ## Gotchas
 
 - Quartz v5 (master) breaks on this machine's node 23.4 (plugin loader chokes on .scss). We vendor Quartz v4 branch, .git removed. Upgrade only by re-clone + re-apply config (quartz.config.ts, quartz.layout.ts footer, package.json "notes" script).
 - The in-app browser pane renders blank screenshots on long pages when the viewport is resized to 1440x900; use the native size.
-- Re-running convert_post.py on a post overwrites hand edits (e.g. the demo sidenote in kernel-trick).
+- Re-running convert_post.py on a post overwrites hand edits (e.g. the demo sidenote in kernel-trick). This is why math/link corrections live in the converter as general rules rather than as edits to the generated markdown. The batch excludes sgd, fa3-cute, and kernel-trick for this reason.
+- Converter URL rewriting must never match on domain alone: the corpus cites external blogs (gregorygundersen.com) whose URLs have the same `/blog/YYYY/slug/` shape as the old permalinks. Anchor such rules to link-target position instead.
+- Quartz `ignorePatterns` are globs against the path, so a bare name only matches a DIRECTORY. To exclude a single file you must write the extension (`"goals.md"`, not `"goals"`). A bare name fails SILENTLY and the file publishes; check the built output, do not assume.
+- Vault notes must link OUT to the Astro site with ABSOLUTE urls. Quartz rewrites root-relative hrefs as vault-internal paths (`/blog/x/` becomes `/notes/blog/x/`). Do not try to fix this in fix-base.mjs; that was tried and reverted.
+- Images: 141 of the old site's 188 are copied, which is correct. The other 47 belong to the old Projects page and al-folio scaffolding and are deliberately left behind (progress.md 2026-07-20).
 - astro build output must not be committed (gitignored); CI builds fresh.
 - The kernel-trick post has one demo sidenote in its intro; user may want it removed eventually.

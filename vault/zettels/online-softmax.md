@@ -10,3 +10,8 @@ $$
 $$
 
 This is the enabling trick of FlashAttention: attention can be computed block by block in SMEM without ever materializing the full score matrix in GMEM — exactly the discipline [[gpu-memory-hierarchy]] demands.
+
+## Related posts
+
+- [[fa3-k2]] — K2 in CuTe [FA3]
+- [[fa3-worklog]] — FlashAttention 3 - A Worklog[WIP]

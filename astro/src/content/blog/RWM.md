@@ -1,0 +1,496 @@
+---
+title: "Randomized Weighted Majority Algorithm"
+date: 2025-01-29
+description: "Learn how the Randomized Weighted Majority (RWM) Algorithm leverages probabilistic prediction to minimize regret and defend against adversarial strategies in online learning environments."
+tags: [ML, Math]
+category: "ML Theory"
+---
+The **Randomized Weighted Majority (RWM) algorithm** is an extension of the **deterministic Weighted Majority (WM) algorithm**, designed to overcome its limitations in adversarial settings, particularly in the **zero-one loss** scenario. This post explores why the deterministic approach struggles, how randomization helps, and what makes the RWM algorithm effective.
+
+## **Problem with the Deterministic WM Algorithm**
+
+The **deterministic Weighted Majority (WM) algorithm** operates by maintaining a set of experts, assigning them weights, and updating these weights based on their correctness. However, this approach suffers from **high regret** in adversarial settings.
+
+- **Regret in adversarial settings**  
+  No deterministic algorithm can achieve a **sublinear regret** of $R_T = o(T)$  for all possible sequences under zero-one loss.  
+
+- **Worst-case scenario leading to linear regret**  
+  If the adversary knows the algorithm’s strategy, it can force it to make mistakes at every step.  
+  - Suppose we have two experts: one always predicts **0**, the other always predicts **1**.  
+  - If the best expert is correct **only half the time**, it makes at most **$T/2$** mistakes.  
+  - The regret is defined as:  $R_T = m_T - m_T^*$  
+    where:  
+    - $m_T$ is the number of mistakes made by the algorithm.  
+    - $m_T^*$ is the number of mistakes made by the best expert.  
+
+
+  Since $m_T^* \leq T/2$, the regret in the worst case is at least:  $R_T \geq T/2$  which grows **linearly** with $T$.
+
+## **The Randomized Weighted Majority Algorithm**
+
+To address this issue, the **Randomized Weighted Majority (RWM)** algorithm introduces **randomness** into the decision-making process. Instead of deterministically following the highest-weighted expert, it assigns a **probabilistic prediction** based on expert weights.
+
+### **Key Idea Behind RWM**
+- Instead of picking the expert with the highest weight **deterministically**, the algorithm selects predictions **probabilistically**, based on expert weights.
+- Experts that have made fewer mistakes are given **higher weights**, making them more likely to be followed.
+- This **randomization prevents the adversary** from forcing the algorithm to always make the same mistakes.
+
+### **Benefits of Randomization**
+- **Sublinear regret in adversarial settings**  
+  Unlike the deterministic approach, RWM can achieve:  $R_T = O(\sqrt{T})$  making it significantly better in the long run.
+  
+- **More balanced decision-making**  
+  By updating expert weights probabilistically, the algorithm avoids overly trusting any one expert too soon.
+
+## **The Randomized Weighted Majority Algorithm: Step-by-Step**
+
+The algorithm follows these steps:
+
+1. **Initialize Weights:** Each expert starts with an equal weight of **1**.
+2. **Compute Probabilities:** The probability of selecting an expert is proportional to its weight.
+3. **Make a Prediction:** Instead of following a single expert, the algorithm chooses its prediction probabilistically.
+4. **Update Weights:** Experts that make mistakes have their weights **decreased** by a factor $\beta$, where $0 < \beta < 1$.
+
+**<mark>Pseudocode:</mark>**
+
+$$
+\begin{array}{l}
+\textbf{Randomized-Weighted-Majority} \ (N) \\[5pt]
+
+\quad 1. \quad \textbf{for } i \gets 1 \text{ to } N \textbf{ do} \\  
+\quad 2. \quad \quad w_{1,i} \gets 1 \\  
+\quad 3. \quad \quad p_{1,i} \gets \frac{1}{N} \\[5pt]
+
+\quad 4. \quad \textbf{for } t \gets 1 \text{ to } T \textbf{ do} \\  
+\quad 5. \quad \quad \textbf{Receive } l_t \\  
+\quad 6. \quad \quad \textbf{for } i \gets 1 \text{ to } N \textbf{ do} \\  
+\quad 7. \quad \quad \quad \textbf{if } (l_{t,i} = 1) \textbf{ then} \\  
+\quad 8. \quad \quad \quad \quad w_{t+1,i} \gets \beta w_{t,i} \\  
+\quad 9. \quad \quad \quad \textbf{else} \\  
+\quad10. \quad \quad \quad \quad w_{t+1,i} \gets w_{t,i} \\[5pt]
+
+\quad11. \quad \quad W_{t+1} \gets \sum_{i=1}^{N} w_{t+1,i} \\[5pt]
+
+\quad12. \quad \quad \textbf{for } i \gets 1 \text{ to } N \textbf{ do} \\  
+\quad13. \quad \quad \quad p_{t+1,i} \gets w_{t+1,i} / W_{t+1} \\[5pt]
+
+\quad14. \quad \textbf{return } \mathbf{w}_{T+1}
+\end{array}
+$$
+
+
+At this point, we've introduced the RWM algorithm, but a key question remains:
+
+> How does randomization **actually prevent** the algorithm from making repeated mistakes, and how is the probabilistic selection **used effectively**?
+
+We'll dive into this in the next section.
+
+---
+
+## **How Randomization Prevents Repeated Mistakes**
+
+The **Randomized Weighted Majority (RWM)** algorithm prevents repeated mistakes in adversarial settings by making predictions **probabilistically based on expert weights**. Here’s how this works step by step:
+
+**1. Maintaining Expert Weights**
+- We assign an initial weight to each expert, typically  $w_i^{(1)} = 1$  for all experts $i$.
+- Over time, we **update the weights** of experts based on their performance, penalizing those who make mistakes.
+
+**2. Making Probabilistic Predictions**
+- Instead of deterministically following the best expert (which an adversary could exploit), RWM **randomly selects a prediction** based on the current expert weights.
+- The probability of choosing a particular expert's prediction is proportional to their weight:  $P(y_t = y_i) = \frac{w_i^{(t)}}{\sum_{j=1}^{N} w_j^{(t)}}$  
+  where $w_i^{(t)}$ is the weight of expert $i$ at time $t$.
+- This means that if an expert has a high weight (i.e., has made fewer mistakes), their prediction is **more likely** to be chosen, but not always.
+- If an adversary tries to force mistakes by targeting a specific deterministic strategy, the randomization ensures that the algorithm **does not always follow a single pattern**, making it harder for the adversary to exploit.
+
+**3. Weight Update Rule**
+- After making a prediction, the algorithm observes the true outcome $y_t$.
+- The weights of experts who made mistakes are **exponentially decreased** using a multiplicative update rule:  $w_i^{(t+1)} = w_i^{(t)} \cdot \beta^{\ell_i^{(t)}}$  
+  where:
+  - $\ell_i^{(t)}$ is the loss (1 if the expert made a mistake, 0 otherwise),
+  - $\beta \in (0,1)$ is a parameter that determines how aggressively the weights are updated.
+- This ensures that over time, experts who consistently make mistakes lose influence, while those with good predictions gain more say in future predictions.
+
+**4. Why This Prevents Repeated Mistakes**
+- Since the algorithm chooses predictions probabilistically, it does not **consistently** make the same mistakes like a deterministic algorithm would.
+- Even if an adversary tries to construct a sequence that forces a mistake, RWM’s randomization means that **the same incorrect choice won’t always be made**.
+- Moreover, since weights adjust dynamically, experts who perform better in the long run **gradually dominate** the prediction process.
+
+### **<mark>Takeaways:</mark>**
+- **Randomization prevents predictable failures**: The algorithm does not follow a fixed pattern, making it harder for an adversary to force mistakes.
+- **Probabilities favor better experts**: Instead of blindly following one expert, the algorithm balances between exploration (randomization) and exploitation (favoring high-weight experts).
+- **Weights adjust over time**: Poor-performing experts lose influence, ensuring the algorithm improves as more data is observed.
+
+By incorporating randomness, the **Randomized Weighted Majority Algorithm** provides a **powerful and adaptive approach** to online learning, making it a fundamental tool in adversarial learning settings.
+
+---
+
+Here's an analogy to make the **Randomized Weighted Majority (RWM) algorithm** more intuitive:
+
+
+Imagine you are in a **new city** for an extended stay, and you have to decide **where to eat dinner every night**. There are multiple restaurants (experts), and each night, you choose one based on your past experiences.
+
+**1. Initial Equal Preference (Assigning Weights)**
+
+At the start, you **have no idea** which restaurant is the best. So, you assign them equal preference:
+
+- Restaurant A, B, and C all seem equally good, so you **randomly pick one**.
+
+**2. Evaluating Performance (Tracking Mistakes)**
+
+Each time you eat at a restaurant, you observe whether the meal was **good** or **bad**.
+
+- If the meal was great, you **trust the restaurant more**.
+- If it was terrible, you **trust it less**.
+
+**3. Adjusting Your Choices Over Time (Weight Updates)**
+
+Instead of always sticking to a single restaurant (which might backfire if it suddenly declines in quality), you **adjust your preferences probabilistically**:
+
+- If **Restaurant A** has served consistently good food, you start **choosing it more often**, but you **don’t completely ignore** B and C.
+- If **Restaurant B** has had a few bad meals, you reduce your visits there **but still give it a chance occasionally**.
+
+**4. Why Randomization Helps**
+
+Imagine there's a **food critic (the adversary)** trying to ruin your dining experience.
+
+- If you **always follow a deterministic rule** (e.g., always picking the currently best restaurant), the critic can **sabotage your choices**—perhaps by tipping off the restaurant to serve bad food only when you visit.
+- However, by **randomizing your choices** (with a bias toward better restaurants), the critic **can't predict where you’ll go**, making it much harder to force repeated bad experiences.
+
+**5. Long-Term Adaptation (Minimizing Regret)**
+
+Over time, bad restaurants get **fewer chances**, and good ones **dominate your choices**. But, because you **never completely eliminate** any option, you still have room to adjust if a once-bad restaurant improves.
+
+### **Mapping Back to RWM**
+
+- **Restaurants = Experts**
+- **Your decision = Algorithm’s prediction**
+- **Good meal = Correct prediction (no loss)**
+- **Bad meal = Mistake (loss)**
+- **Reducing visits to bad restaurants = Lowering expert weights**
+- **Randomly choosing where to eat = Making probabilistic predictions**
+
+By **not always following the same pattern**, you prevent predictable failures and **gradually learn the best strategy** while adapting to changes.
+
+---
+
+## **Randomized Weighted Majority Algorithm: Regret Bound and Proof**
+
+The main objective of the RWM algorithm is to minimize the **regret**, which is the difference between the cumulative loss of the algorithm and that of the best possible decision (in hindsight) over time.
+
+Now, we’ll dive into the **regret bound** for the RWM algorithm. Specifically, we’ll present a theorem that gives a strong guarantee on the regret $R_T$ of the algorithm, and follow up with a proof that demonstrates the result.
+
+### **Setting & Notations**
+
+At each round $t \in [T]$, an online algorithm $A$ selects a distribution $p_t$ over the set of actions, receives a loss vector $\mathbf{l}_t$, whose $i$-th component $l_{t,i} \in [0, 1]$ is the loss associated with action $i$, and incurs the expected loss:
+
+$$ L_t = \sum_{i=1}^{N} p_{t,i} l_{t,i} $$
+
+The total loss incurred by the algorithm over $T$ rounds is:
+
+$$ \mathcal{L}_T = \sum_{t=1}^{T} L_t $$
+
+The total loss associated with action $i$ is:
+
+$$ \mathcal{L}_{T,i} = \sum_{t=1}^{T} l_{t,i} $$
+
+The minimal loss of a single action is denoted by:
+
+$$ \mathcal{L}_{\text{min}}^T = \min_{i \in A} \mathcal{L}_{T,i} $$
+
+The regret $R_T$ of the algorithm after $T$ rounds is typically defined as the difference between the loss of the algorithm and that of the best single action:
+
+$$ R_T = \mathcal{L}_T - \mathcal{L}_{\text{min}}^T $$
+
+**Note:** Whenever you're confused by the notations of $L$ and $\mathcal{L}$, refer to this.
+
+---
+
+### **RWM Regret Bound**
+
+The following **theorem** provides a regret bound for the RWM algorithm, showing that the regret $R_T$ is in $O(\sqrt{T \log N})$, where $T$ is the number of rounds, and $N$ is the number of experts.
+
+**Theorem** : Fix $\beta \in [\frac{1}{2}, 1)$. Then, for any $T \geq 1$, the loss of the algorithm $\text{RWM}$ on any sequence of decisions can be bounded as follows:
+
+$$
+\mathcal{L}_T \leq \frac{\log N}{1 - \beta} + (2 - \beta) \mathcal{L}^{\min}_T \tag{1}
+$$
+
+In particular, for $\beta = \max\left(\frac{1}{2}, 1 - \sqrt{\frac{\log N}{T}}\right)$, the loss can be further bounded as:
+
+$$
+\mathcal{L}_T \leq \mathcal{L}^{\min}_T + 2 \sqrt{T \log N} \tag{2}
+$$
+
+Here, $\mathcal{L}_T$ is the total loss incurred by the algorithm till $T$ rounds, and $\mathcal{L}^{\min}_T$ is the minimal possible loss achievable by any expert till $T$ rounds.
+
+---
+
+### **Proof Outline: Deriving the Regret Bound**
+
+The proof of this result relies on analyzing the **potential function** $W_t$, which represents the total weight assigned to the experts at each round $t$. We derive upper and lower bounds for $W_t$ and combine them to establish the regret bound.
+
+Let’s walk through the key steps of the proof.
+
+
+---
+
+**Step 1: The Weight Update Rule**
+The weight of expert $i$ at round $t+1$ is updated based on their incurred loss $l_{t,i}$:
+
+$$
+w_{t+1, i} =
+\begin{cases}
+w_{t, i} \cdot \beta, & \text{if } l_{t, i} = 1 \\
+w_{t, i}, & \text{if } l_{t, i} = 0
+\end{cases}
+$$
+
+where $\beta \in (0,1)$ is a fixed discount factor.
+
+The total weight at round $t+1$ is then:
+
+$$
+W_{t+1} = \sum_{i=1}^{N} w_{t+1, i}
+$$
+
+---
+
+**Step 2: Evolution of Total Weight**
+Using the update rule, we can express $W_{t+1}$ in terms of $W_t$:
+
+$$
+W_{t+1} = \sum_{i: l_{t,i} = 0} w_{t,i} + \beta \sum_{i: l_{t,i} = 1} w_{t,i}
+$$
+
+$$
+= W_t + (\beta - 1) \sum_{i: l_{t,i} = 1} w_{t,i}
+$$
+
+$$
+= W_t + (\beta - 1) W_t \sum_{i: l_{t,i} = 1} p_{t,i}
+$$
+
+$$
+= W_t + (\beta - 1) W_t L_t
+$$
+
+$$
+= W_t (1 - (1 - \beta) L_t)
+$$
+
+---
+
+**Note:** If you're unsure, refer to the items listed below, which should be used appropriately to achieve the desired result.
+
+Using the probability interpretation of the weights:
+
+$$
+\sum_{i: l_{t,i}=1} w_{t,i} = W_t L_t,
+$$
+
+where $L_t$ is the expected loss at time $t$:
+
+$$
+L_t = \sum_{i=1}^{N} p_{t,i} l_{t,i}
+$$
+
+Thus, we obtain:
+
+$$
+W_{t+1} = W_t(1 - (1 - \beta) L_t)
+$$
+
+---
+
+By recursion, since $W_1 = N$, we get:
+
+$$
+W_{T+1} = N \prod_{t=1}^{T} (1 - (1 - \beta) L_t)
+$$
+
+---
+
+**Step 3: Lower Bound on $W_{T+1}$**
+The minimum weight of any expert at round $T+1$ satisfies:
+
+$$
+W_{T+1} \geq \max_{i \in [N]} w_{T+1, i} = \beta^{\mathcal{L}_T^{\min}}
+$$
+
+where $\mathcal{L}_T^{\min}$ is the loss of the best expert.
+
+How did we arrive at this version?
+
+Each expert's weight evolves according to the **multiplicative update rule**. If expert $i$ incurs a loss $l_{t,i}$ at round $t$, its weight is updated as:
+
+$$
+w_{t+1, i} = w_{t,i} \cdot \beta^{l_{t,i}}
+$$
+
+where $\beta \in (0,1]$ is the update factor.
+
+Define the **best expert** as the one with the **minimum cumulative loss** over $T$ rounds. Let $\mathcal{L}_T^{\min}$ denote this minimum loss:
+
+$$
+\mathcal{L}_T^{\min} = \min_{i \in [N]} \sum_{t=1}^{T} l_{t,i}
+$$
+
+For this best expert (say expert $i^*$), its weight after $T$ rounds evolves as:
+
+$$
+w_{T+1, i^*} = w_{1, i^*} \cdot \prod_{t=1}^{T} \beta^{l_{t,i^*}}
+$$
+
+Since all experts start with an equal initial weight $w_{1, i} = 1$ (assuming uniform initialization), we have:
+
+$$
+w_{T+1, i^*} = \beta^{\mathcal{L}_T^{\min}}
+$$
+
+Since the **total weight** at round $T+1$ is at least the weight of the best expert, we get:
+
+$$
+W_{T+1} = \sum_{i=1}^{N} w_{T+1, i} \geq w_{T+1, i^*} = \beta^{\mathcal{L}_T^{\min}}
+$$
+
+Thus, the lower bound holds:
+
+$$
+W_{T+1} \geq \beta^{\mathcal{L}_T^{\min}}
+$$
+
+This ensures that the total weight does not shrink too fast, preserving a lower bound based on the best expert's performance.
+
+
+---
+
+**Step 4: Taking Logarithms**
+Taking the logarithm of both bounds:
+
+$$
+\log W_{T+1} = \log N + \sum_{t=1}^{T} \log (1 - (1 - \beta) L_t)
+$$
+
+For the second term, using the inequality $\log(1 - x) \leq -x$ for $x < 1$, we get:
+
+$$
+\sum_{t=1}^{T} \log (1 - (1 - \beta) L_t) \leq \sum_{t=1}^{T} - (1 - \beta) L_T = - (1 - \beta) \mathcal{L}_T
+$$
+
+Thus,
+
+$$
+\log W_{T+1} \leq \log N - (1 - \beta) \mathcal{L}_T.
+$$
+
+Similarly, for the lower bound:
+
+$$
+\log W_{T+1} \geq \mathcal{L}_T^{\min} \log \beta
+$$
+
+Combining these,
+
+$$
+\mathcal{L}_T^{\min} \log \beta \leq \log N - (1 - \beta) \mathcal{L}_T.
+$$
+
+Rearranging,
+
+$$
+\mathcal{L}_T \leq \frac{\log N}{1 - \beta} - \frac{\log \beta}{1 - \beta} \mathcal{L}_T^{\min}
+$$
+
+
+$$
+\mathcal{L}_T \leq \log N - \frac{\log (1 - (1 - \beta))}{1 - \beta} \mathcal{L}_T^{\min}
+$$
+
+
+Again, for this second term, using the inequality $-\log(1 - x) \leq x+x^2$ for $x \in [0, \frac{1}{2}]$, we get:
+
+
+$$
+\mathcal{L}_T \leq \frac{\log N}{1 - \beta} + (2 - \beta) \mathcal{L}_T^{\min} \tag{1}
+$$
+
+This is the main result, and it provides a clear bound on the cumulative loss $\mathcal{L}_T$.
+
+---
+
+**Step 5: Choosing Optimal $\beta$**
+
+We differentiate with respect to $\beta$ and setting it to zero gives:
+
+$$
+\frac{\log N}{(1 - \beta)^2} - T = 0
+$$
+
+Solving for $\beta$:
+
+$$
+\beta = 1 - \sqrt{\frac{\log N}{T}} < 1
+$$
+
+If $1 - \sqrt{\frac{\log N}{T}} \geq \frac{1}{2}$, then:
+
+$$
+\beta_0 = 1 - \sqrt{\frac{\log N}{T}}
+$$
+
+Otherwise, we use the boundary value $\beta_0 = \frac{1}{2}$ is the optimal value.
+
+Substituting this choice in $(1)$, we get:
+
+$$
+\mathcal{L}_T \leq \mathcal{L}_T^{\min} + 2\sqrt{T \log N} \tag{2}
+$$
+
+Thus, the **regret bound** is:
+
+$$
+R_T = \mathcal{L}_T - \mathcal{L}_T^{\min} \leq 2 \sqrt{T \log N}
+$$
+
+
+**Key Essence:**
+- The **regret** of the RWM algorithm is $O(\sqrt{T \log N})$.
+- The **average regret per round $R_T/T$** decreases as $O(1/\sqrt{T})$.
+
+This result shows that RWM achieves **sublinear regret**, meaning that as the number of rounds $T$ grows, the algorithm performs almost as well as the best expert.
+
+---
+
+Do we really grasp what this formula is conveying? It highlights a remarkable bound in online learning. Alright, let’s dig into that further.
+
+**What does sublinear regret mean?**
+
+When we say that an algorithm has **sublinear regret**, we mean that the total regret **grows slower than the number of rounds**. As the number of rounds $T$ increases, the gap between the algorithm's performance and the best expert's performance doesn't increase linearly. Instead, it grows at a slower rate (e.g., $\sqrt{T}$).
+
+**The meaning of the formula:**
+
+- **Regret $O(\sqrt{T \log N})$**: This tells you that after $T$ rounds, the total regret will grow roughly as $\sqrt{T}$, with an additional logarithmic factor based on $N$ (the number of possible actions). The logarithmic term grows slowly and doesn’t significantly affect the overall growth for large $T$.
+  
+- **Average regret per round $O(1/\sqrt{T})$**: This shows that, on average, the regret per round decreases as the number of rounds increases. As $T$ gets larger, the average regret (the loss per round) decreases.
+
+**Sublinear regret in action:**
+
+1. **At the start**, when the algorithm has few rounds to learn, it might perform poorly (larger regret).
+2. **Over time**, as $T$ grows, the algorithm’s performance improves. It makes fewer mistakes as it "learns" from past rounds, and the regret per round decreases.
+3. **After many rounds**, the algorithm performs almost as well as the best possible action, and the regret becomes quite small.
+
+**Key takeaway:**
+- **Sublinear regret** means that the algorithm's performance gets closer to the best possible action as the number of rounds increases, but it does so at a slower pace than linear growth. The algorithm doesn't just keep getting worse with more rounds; instead, it converges toward optimal performance.
+
+**Note:** The bound $(2)$ assumes that the algorithm additionally receives as a parameter the number of rounds $T$. However, as we learned from the [Doubling trick](/blog/doubling-trick/) in the previous blog, this requirement can be relaxed at the cost of a small constant factor increase.
+
+---
+
+### **Conclusion**
+
+The **Randomized Weighted Majority (RWM) Algorithm** provides a powerful and efficient method for decision-making and prediction in online learning. The regret bound we've derived shows that, under the right conditions, the RWM algorithm can perform nearly as well as the best possible expert in hindsight, with a regret that grows at most as $O(\sqrt{T \log N})$.
+
+This result is optimal, as demonstrated by further lower bound theorems, and provides a strong theoretical guarantee for the RWM algorithm's performance in practice.
+
+
+### **References**

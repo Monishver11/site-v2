@@ -18,7 +18,13 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: process.env.NOTES_BASE_URL ?? "monishver11.github.io/notes",
-    ignorePatterns: ["private", "daily", "templates", ".obsidian"],
+    // "goals" is personal planning, not published writing. It sits at the vault
+    // root so Obsidian and the daily rollover can read it, which would
+    // otherwise put it on /notes.
+    // "goals.md" needs the extension: these patterns are globs against the path,
+    // so a bare "goals" only matches a DIRECTORY called goals and the file
+    // still published. Verified by checking for public/goals.html after build.
+    ignorePatterns: ["private", "daily", "templates", ".obsidian", "goals.md"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",

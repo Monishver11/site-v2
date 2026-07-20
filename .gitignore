@@ -8,3 +8,8 @@ quartz/.quartz-cache/
 # but they should not even reach the public repo).
 vault/daily/*
 !vault/daily/README.md
+
+# Personal planning, local only. Quartz also ignores it (quartz.config.ts), but
+# that only stops it publishing to /notes -- this repo is PUBLIC, so it needs a
+# gitignore too. Same treatment as the daily notes it feeds.
+vault/goals.md

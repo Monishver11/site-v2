@@ -1,0 +1,315 @@
+---
+title: "Understanding the Weighted Majority Algorithm in Online Learning"
+date: 2025-01-23
+description: "Explore how the Weighted Majority Algorithm achieves robust bounds for adversarial settings by adapting expert weights with every mistake."
+tags: [ML, Math]
+category: "ML Theory"
+---
+**The Weighted Majority Algorithm: A Powerful Online Learning Technique**
+
+In the continuation of our exploration into online learning, we turn to the **Weighted Majority Algorithm (WMA)**, an influential approach introduced by Littlestone and Warmuth in 1988. This algorithm builds upon the foundational principles of online learning and offers remarkable theoretical guarantees for handling adversarial scenarios.
+
+Let’s dive into the workings of the Weighted Majority Algorithm, analyze its performance, and understand its strengths and limitations.
+
+
+## **The Weighted Majority Algorithm**
+
+The Weighted Majority Algorithm operates in a framework where predictions are made by combining the advice of multiple experts. Unlike the Halving Algorithm, which outright eliminates incorrect hypotheses, WMA assigns and updates weights to experts based on their performance, ensuring a more adaptive approach.
+
+### **The Algorithm Steps**
+
+1. **Initialization**:
+   - Start with $N$ experts, each assigned an initial weight of 1:  
+     $$w_{1,i} = 1 \quad \text{for } i = 1, 2, \dots, N$$
+
+2. **Prediction**:
+   - At each time step $t$:
+     - Receive the instance $x_t$.
+     - Predict the label $\hat{y}_t$ using a **weighted majority vote**:
+       $$
+       \hat{y}_t =
+       \begin{cases} 
+       1 & \text{if } \sum_{i: y_{t,i}=1}^{N} w_{t,i} > \sum_{i: y_{t,i}=0}^{N} w_{t,i}, \\
+       0 & \text{otherwise.} 
+       \end{cases}
+       $$
+
+
+3. **Update Weights**:
+   - After receiving the true label $y_t$, update the weights of the experts:
+     - For each expert $i$:
+       $$
+       w_{t+1,i} =
+       \begin{cases} 
+       \beta w_{t,i} & \text{if } y_{t,i} \neq y_t, \\
+       w_{t,i} & \text{otherwise,}
+       \end{cases}
+       $$
+       where $\beta \in [0,1)$ is a parameter that reduces the weight of experts who make incorrect predictions.
+
+[The condition check matters here right??, 2 cases: 1. if the majority vote is correct, then no update for the experts that did mistake. 2. If the majoriy vote is wrong, then we update correctly for experts that are wrong. So, its better to update without checking if the majority vote gives correct result right? ]
+
+4. **Termination**:
+   - After $T$ iterations, return the final weights of all experts.
+
+
+## **Theoretical Performance of the Weighted Majority Algorithm**
+
+### **Mistake Bound**
+
+**Theorem:**
+The Weighted Majority (WM) algorithm guarantees a bound on the number of mistakes it makes compared to the best expert. Let:
+- $m_t$: Total number of mistakes made by the WM algorithm up to time $t$,
+- $m_t^*$: Number of mistakes made by the best expert up to time $t$,
+- $N$: Total number of experts,
+- $\beta$: Parameter controlling the weight decay for incorrect experts.
+
+The mistake bound is given by:
+
+$$
+m_t \leq \frac{\log N + m_t^* \log \frac{1}{\beta}}{\log \frac{2}{1+\beta}}
+$$
+
+
+**Interpretation of the Bound:**
+1. **First Term ($\log N$)**:
+   - This term accounts for the initial uncertainty due to having $N$ experts. The algorithm needs to explore to identify the best expert, and the logarithmic dependence on $N$ ensures scalability.
+
+2. **Second Term ($m_t^* \log \frac{1}{\beta}$)**:
+   - This term reflects the cost of following the best expert, scaled by $\log \frac{1}{\beta}$. A smaller $\beta$ increases the penalty for mistakes, leading to slower adaptation but potentially fewer overall mistakes. [**Think it through, Why?**]
+
+3. **Denominator ($\log \frac{2}{1+\beta}$)**:
+   - This represents the efficiency of the weight adjustment. When $\beta$ is close to 0 (as in the Halving Algorithm), the denominator becomes larger, leading to tighter bounds.
+
+
+**Special Cases:**
+1. **Realizable Case ($m_t^* = 0$)**:
+   - If there exists an expert with zero mistakes, the bound simplifies to:
+     $$
+     m_t \leq \frac{\log N}{\log \frac{2}{1+\beta}}
+     $$
+     - For the Halving Algorithm ($\beta = 0$), this further simplifies to:
+       $$
+       m_t \leq \log N
+       $$
+
+2. **General Case**:
+   - When no expert is perfect ($m_t^* > 0$), the algorithm incurs an additional cost proportional to $m_t^* \log \frac{1}{\beta}$. This reflects the cost of distributing weights among experts.
+
+
+**Intuition:**
+- The Weighted Majority Algorithm balances exploration (trying all experts) and exploitation (focusing on the best expert). The logarithmic terms indicate that the algorithm adapts efficiently, even with a large number of experts.
+- By tuning $\beta$, the algorithm can trade off between faster adaptation and resilience to noise. A smaller $\beta$ (e.g., $\beta = 0$) emphasizes rapid adaptation, while a larger $\beta$ smoothens weight updates.
+
+
+**Note:** If this isn’t clear, I can simplify it further, but this time, I encourage you to try and understand it on your own. There’s a reason behind this—it helps you build a mental model of how the algorithm works and strengthens your intuition. This kind of reinforcement is essential as we dive deeper into advanced ML concepts. I hope this makes sense. If you’re still struggling, consider using tools like ChatGPT or Perplexity to gain additional clarity.
+
+
+---
+
+## **Proof of the Mistake Bound**
+
+<mark>A general method for deducing bounds and guarantees involves defining a potential function, establishing both upper and lower bounds for it, and deriving results from the resulting inequality.</mark> This powerful approach is central to deducing several proofs. Specifically, the proof of the mistake bound relies on defining a potential function that tracks the total weight of all experts over time.
+
+### **Potential Function**
+
+The potential function at time $t$ is defined as:
+
+$$
+\Phi_t = \sum_{i=1}^N w_{t,i},
+$$
+
+where $w_{t,i}$ is the weight of expert $i$ at time $t$.
+
+
+### **Upper Bound on Potential**
+
+Initially, the weights of all $N$ experts sum up to $\Phi_0 = N$ since each expert starts with a weight of 1.
+
+**Step 1: Effect of a Mistake**
+
+When the Weighted Majority Algorithm makes a mistake, the weights of the experts who predicted incorrectly are reduced by a factor of $\beta$, where $0 < \beta < 1$. This means the total weight at the next time step, $\Phi_{t+1}$, will be less than or equal to the weighted average of the weights of the correct and incorrect experts.
+
+**Step 2: Fraction of Correct and Incorrect Experts**
+
+Let’s say a fraction $p$ of the total weight belongs to the correct experts, and a fraction $1 - p$ belongs to the incorrect experts. After the mistake, the incorrect experts’ weights are scaled by $\beta$. Thus, the new potential is:
+
+$$
+\Phi_{t+1} = p \Phi_t + \beta (1 - p) \Phi_t
+$$
+
+**Step 3: Simplifying the Expression**
+
+Factor out $\Phi_t$ from the equation:
+
+$$
+\Phi_{t+1} = \Phi_t \left[ p + \beta (1 - p) \right]
+$$
+
+Rewriting $p + \beta (1 - p)$:
+
+$$
+\Phi_{t+1} = \Phi_t \left[ 1 - (1 - \beta)(1 - p) \right]
+$$
+
+Since $p + (1 - p) = 1$, this simplifies to:
+
+$$
+\Phi_{t+1} \leq \Phi_t \left[ 1 + \frac{\beta}{2} \right]
+$$
+
+This inequality holds because the worst-case scenario assumes $p = \frac{1}{2}$, where half the weight comes from correct predictions and half from incorrect predictions.
+
+**Step 4: Over Multiple Mistakes**
+
+If the algorithm makes $m_t$ mistakes, the inequality applies iteratively. After $m_t$ mistakes, the potential becomes:
+
+$$
+\Phi_t \leq \Phi_0 \left[ 1 + \frac{\beta}{2} \right]^{m_t}
+$$
+
+Substituting $\Phi_0 = N$ (the initial total weight):
+
+$$
+\Phi_t \leq N \left[ 1 + \frac{\beta}{2} \right]^{m_t}
+$$
+
+**Intuition:**
+The factor $1 + \frac{\beta}{2}$ reflects the reduction in potential after each mistake. As $\beta$ decreases, the penalty for incorrect experts increases, leading to a faster reduction in $\Phi_t$. This bound shows how the potential decreases exponentially with the number of mistakes $m_t$.
+
+
+--- 
+
+### **Lower Bound on Potential**
+
+The **lower bound** on the potential is based on the performance of the best expert in the algorithm. 
+
+Let’s define $w_{t,i}$ as the weight of expert $i$ at time $t$. The total potential $\Phi_t$ is the sum of the weights of all experts. Since the best expert is the one with the highest weight at any time, we can state that:
+
+$$
+\Phi_t \geq w_{t,i^*}
+$$
+
+where $i^*$ is the index of the best expert. 
+
+Now, the key point is that the weight of the best expert, $w_{t,i^*}$, decays over time as it makes mistakes. Let $m_t^*$ be the number of mistakes made by the best expert up to time $t$. Since each mistake reduces the weight of the best expert by a factor of $\beta$, the weight of the best expert at time $t$ is given by:
+
+$$
+w_{t,i^*} = \beta^{m_t^*}
+$$
+
+Therefore, the potential at time $t$ is at least the weight of the best expert:
+
+$$
+\Phi_t \geq \beta^{m_t^*}
+$$
+
+This provides a **lower bound** on the potential.
+
+### **Combining the Upper and Lower Bounds**
+
+Now that we have both an upper bound and a lower bound on the potential, we can combine them to get a more useful inequality.
+
+From the upper bound, we know:
+
+$$
+\Phi_t \leq \left[\frac{1 + \beta}{2}\right]^{m_t} N
+$$
+
+From the lower bound, we know:
+
+$$
+\Phi_t \geq \beta^{m_t^*}
+$$
+
+By combining these two inequalities, we get:
+
+$$
+\beta^{m_t^*} \leq \left[\frac{1 + \beta}{2}\right]^{m_t} N
+$$
+
+This inequality tells us that the weight of the best expert at time $t$, $\beta^{m_t^*}$, is less than or equal to the total potential $\Phi_t$ after $m_t$ mistakes.
+
+
+To solve for $m_t$, we take the logarithm of both sides of the inequality:
+
+$$
+\log \left( \beta^{m_t^*} \right) \leq \log \left( \left[\frac{1 + \beta}{2}\right]^{m_t} N \right)
+$$
+
+Using the logarithmic property $\log(a^b) = b \log(a)$, we simplify both sides:
+
+$$
+m_t^* \log \beta \leq m_t \log \left[\frac{1 + \beta}{2}\right] + \log N
+$$
+
+
+
+Now, we want to isolate $m_t$ on one side of the inequality. First, subtract $\log N$ from both sides:
+
+$$
+m_t^* \log \beta - \log N \leq m_t \log \left[\frac{1 + \beta}{2}\right].
+$$
+
+Now, divide both sides by $\log \left[\frac{1 + \beta}{2}\right]$. Note that $\log \left[\frac{1 + \beta}{2}\right]$ is negative because $\frac{1 + \beta}{2} < 1$, so dividing by it reverses the inequality:
+
+$$
+m_t \geq \frac{m_t^* \log \beta - \log N}{\log \left[\frac{1 + \beta}{2}\right]}.
+$$
+
+We can simplify the expression further by recognizing that $\log \frac{1}{\beta} = -\log \beta$. This gives us:
+
+$$
+m_t \leq \frac{\log N + m_t^* \log \frac{1}{\beta}}{\log \frac{2}{1 + \beta}}.
+$$
+
+This is the final inequality, which gives a bound on the number of mistakes $m_t$ made by the algorithm in terms of the number of mistakes $m_t^*$ made by the best expert, the total number of experts $N$, and the factor $\beta$.
+
+
+**Note:** The **less than or equal to (≤)** sign appears because of the **inequality reversal** when dividing by a negative quantity. This is why the final inequality has the $\leq$ sign instead of $\geq$.
+
+
+This completes the proof of the mistake bound. The inequality shows that the number of mistakes $m_t$ made by the algorithm is related to the mistakes $m_t^*$ made by the best expert, and that the algorithm’s performance improves as $\beta$ decreases.
+
+[Self - Understand it better, think it through]
+
+---
+
+### **Strengths and Weaknesses of the Weighted Majority Algorithm**
+
+**Advantages**
+- **Strong Theoretical Bound**:  
+   - The Weighted Majority Algorithm (WMA) achieves a remarkable theoretical bound on regret without requiring any assumptions about the data distribution or the performance of individual experts.  
+   - This makes it robust, particularly in adversarial environments.  
+
+**Disadvantages**
+- **Limitation with Binary Loss**:  
+   - For binary loss, no deterministic algorithm (including WMA) can achieve a regret $R_T = o(T)$.  
+   - This means deterministic WMA cannot guarantee sublinear regret in such settings.
+
+In the context of binary loss, where predictions are either correct or incorrect (0 or 1), deterministic algorithms like the Weighted Majority Algorithm (WMA) face a fundamental limitation. Regret, which measures how much worse the algorithm performs compared to the best expert in hindsight, ideally should grow sublinearly with the number of rounds ($T$). However, deterministic WMA cannot achieve this in adversarial environments. The fixed and predictable nature of deterministic strategies allows adversaries to exploit the algorithm, forcing it into repeated mistakes. As a result, the regret $R_T$ grows at least linearly with $T$, meaning the algorithm's performance does not improve relative to the best expert over time. This inability to achieve sublinear regret ($R_T = o(T)$) under binary loss is a significant disadvantage of deterministic WMA, necessitating alternative approaches like randomization to overcome this limitation.
+
+
+[Still, Not clear of this limitation, How and Why?]  
+
+In the following cases, the Weighted Majority Algorithm offers improved guarantees:
+
+1. **Randomization Improves Regret Bounds**:
+   - **Randomized versions** of WMA (e.g., RWMA) can improve the regret bound by introducing randomness, which helps the algorithm avoid getting stuck with poor-performing experts.
+
+2. **Extensions for Convex Losses**:
+   - WMA can be adapted to handle **convex loss functions**, such as in regression tasks. In these cases, the algorithm provides improved theoretical guarantees, ensuring more reliable and efficient performance.
+
+---
+
+
+### **Conclusion**
+
+The Weighted Majority Algorithm offers an elegant and efficient approach to handling adversarial settings. By adaptively updating the weights of experts, it ensures robust performance with minimal assumptions.
+
+In the next post, we’ll dive into alternative versions of WMA and explore powerful algorithms designed for online learning. Stay tuned!  
+
+
+### **References**
+- 
+
