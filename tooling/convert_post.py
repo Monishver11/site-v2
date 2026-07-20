@@ -306,17 +306,35 @@ def convert_inline_math(body):
     return "\n".join(out_lines)
 
 
-def convert(post_path):
-    text = post_path.read_text()
-    fm, body = parse_frontmatter(text)
+def copy_image(rel):
+    """Copy assets/img/<rel> into the site's public/img, preserving subpath.
+    <rel> may be percent-encoded (some source filenames contain spaces); the
+    file on disk keeps its real name, so decode before locating and copying.
+    Returns True if it existed."""
+    from urllib.parse import unquote as _urlunquote
 
-    slug = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", post_path.stem)
-    date = fm.get("date") or post_path.stem[:10]
-    title = fm.get("title", slug)
-    desc = fm.get("description", "")
-    tags = [t for t in fm.get("tags", "").split() if t]
-    old_cat = fm.get("categories", "").strip()
-    category = CATEGORY_MAP.get(old_cat, "Projects")
+    real = _urlunquote(rel)
+    src = JEKYLL_ROOT / "assets/img" / real
+    dst = IMG_OUT / real
+    if src.exists():
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+        return True
+    print(f"  [missing image] {real}")
+    return False
+
+
+def transform_body(body):
+    """The full al-folio -> Astro body pipeline, shared by posts and projects:
+    figures, captions, math delimiter normalisation, heading promotion, link
+    rewriting, and image copying. Every fix lives here so both converters get
+    all of them."""
+
+    # A markdown image URL cannot contain a raw space; percent-encode it so the
+    # link stays intact. copy_image decodes it back to find the real file. One
+    # project image is "Lasso Regression_plot.png".
+    def enc(rel):
+        return rel.replace(" ", "%20")
 
     # figure.liquid includes become plain markdown images.
     def fig_sub(m):
@@ -324,7 +342,7 @@ def convert(post_path):
         path = attrs.get("path", "")
         rel = re.sub(r"^assets/img/", "", path)
         alt = attrs.get("title", rel)
-        return f"![{alt}](/assets/img/{rel})"
+        return f"![{alt}](/assets/img/{enc(rel)})"
 
     # re.S matters: some includes wrap onto a second line, e.g.
     #   {% include figure.liquid path="assets/img/kafka-1.png" title="kafka-1"
@@ -332,6 +350,20 @@ def convert(post_path):
     # Without DOTALL those never matched, so 3 images in big-data-10-kafka were
     # dropped and the raw liquid was left visible in the rendered post.
     body = re.sub(r"{%\s*include figure\.liquid.*?%}", fig_sub, body, flags=re.S)
+
+    # video.liquid -> HTML5 <video>. Only _projects uses it (one clip). Emit
+    # muted+loop+playsinline with controls, no autoplay (surprise motion). The
+    # /assets/img path is rewritten and the file copied by the image pass below,
+    # same as any image; shutil copies the .mp4 fine.
+    def video_sub(m):
+        attrs = dict(re.findall(r'(\w+)="([^"]*)"', m.group(0)))
+        rel = re.sub(r"^assets/img/", "", attrs.get("path", ""))
+        return (
+            f'<video src="/assets/img/{enc(rel)}" controls muted loop '
+            f'playsinline class="post-video"></video>'
+        )
+
+    body = re.sub(r"{%\s*include video\.liquid.*?%}", video_sub, body, flags=re.S)
 
     # al-folio wraps figures in Bootstrap grid divs; markdown inside raw HTML
     # blocks is not parsed, so unwrap them. Captions become italic lines.
@@ -366,18 +398,27 @@ def convert(post_path):
     body = promote_headings(body)
 
     # Images: /assets/img/foo.png -> /img/foo.png, copy the file.
-    def img_sub(m):
-        rel = m.group(1)
-        src = JEKYLL_ROOT / "assets/img" / rel
-        dst = IMG_OUT / rel
-        if src.exists():
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dst)
-        else:
-            print(f"  [missing image] {rel}")
-        return f"/img/{rel}"
+    body = re.sub(
+        r"/assets/img/([^\s\)\"']+)",
+        lambda m: (copy_image(m.group(1)), f"/img/{m.group(1)}")[1],
+        body,
+    )
+    return body
 
-    body = re.sub(r"/assets/img/([^\s\)\"']+)", img_sub, body)
+
+def convert(post_path):
+    text = post_path.read_text()
+    fm, body = parse_frontmatter(text)
+
+    slug = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", post_path.stem)
+    date = fm.get("date") or post_path.stem[:10]
+    title = fm.get("title", slug)
+    desc = fm.get("description", "")
+    tags = [t for t in fm.get("tags", "").split() if t]
+    old_cat = fm.get("categories", "").strip()
+    category = CATEGORY_MAP.get(old_cat, "Projects")
+
+    body = transform_body(body)
 
     tags_yaml = "[" + ", ".join(tags) + "]"
     fm_new = (

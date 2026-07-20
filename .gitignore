@@ -13,3 +13,6 @@ vault/daily/*
 # that only stops it publishing to /notes -- this repo is PUBLIC, so it needs a
 # gitignore too. Same treatment as the daily notes it feeds.
 vault/goals.md
+
+# Astro build cache, regenerated every build
+astro/.astro/

@@ -30,6 +30,9 @@ cd quartz && npx quartz build -d ../vault
 # port a Jekyll post into the Astro collection
 python3 tooling/convert_post.py /path/to/_posts/<file>.md
 
+# port an al-folio project into the projects gallery
+python3 tooling/convert_project.py /path/to/_projects/<file>.md
+
 # regenerate vault stubs + the link graph + the candidate report
 python3 tooling/make_stubs.py
 
@@ -43,6 +46,11 @@ python3 tooling/make_stubs.py
 old Jekyll corpus by `tooling/convert_post.py`. See
 [tooling/CONVERSION.md](tooling/CONVERSION.md) for what the converter does and
 the checks to run afterwards.
+
+**Projects** in `astro/src/content/projects/` are the portfolio gallery at
+`/projects`, generated from al-folio `_projects` by `tooling/convert_project.py`.
+Both converters share `convert_post.transform_body()`, so a fix to the body
+pipeline (math, figures, images, video) benefits both.
 
 **Vault stubs** in `vault/posts/` are generated from those posts by
 `tooling/make_stubs.py`. One short note per post, linking out to the real thing.

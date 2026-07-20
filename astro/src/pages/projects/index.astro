@@ -1,0 +1,107 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.importance - b.data.importance,
+);
+---
+
+<Base
+  title="Projects · Monishver Chandrasekaran"
+  description="Selected projects, from ML systems and GPU kernels to applied research."
+>
+  <section class="head">
+    <h1>Projects</h1>
+    <p class="sub">Selected work, from ML systems to GPU kernels</p>
+    <hr class="flourish" />
+  </section>
+
+  <ul class="grid">
+    {
+      projects.map((p) => (
+        <li class="card">
+          <a href={`/projects/${p.id}/`}>
+            {p.data.thumb && (
+              <div class="thumb">
+                <img src={p.data.thumb} alt="" loading="lazy" />
+              </div>
+            )}
+            <h2>{p.data.title}</h2>
+            <p class="desc">{p.data.description}</p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .sub {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.6rem auto 2.4rem;
+  }
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  @media (max-width: 40rem) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+  .thumb {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    margin-bottom: 0.8rem;
+    background: var(--surface, #f2efe9);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .card a:hover .thumb img {
+    transform: scale(1.03);
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    -webkit-text-stroke: 0.3px currentColor;
+    line-height: 1.3;
+    margin: 0 0 0.4rem;
+  }
+  .card a:hover h2 {
+    color: var(--accent);
+  }
+  .desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

@@ -83,6 +83,33 @@ Result: **216 links across 92 of 93 posts.** Only `nyu-grad` is isolated, correc
 ### Quartz footer fixed
 Footer links were hardcoded to the bare domain, so a reader on staging /notes clicking "Blog" was sent to the OLD site. They now read `SITE_BASE_URL` (set in deploy.yml, defaults to the staging origin in quartz.layout.ts). One more thing to flip at prod flip.
 
+## 2026-07-20: Projects section
+
+Ported the 5 al-folio `_projects` portfolio pieces into a dedicated `/projects` gallery. User chose a dedicated gallery (option a) over folding them into the blog; the 3 small "Projects"-category blog posts (mlp-derivatives, mlp-fw-bwd, nyu-grad) stay as blog posts, unchanged.
+
+### Shared converter refactor
+The al-folio body pipeline (figures, captions, math delimiter normalisation, heading promotion, link rewriting, image copying) was extracted from `convert_post.convert()` into `convert_post.transform_body()`. Verified behaviour-preserving by diffing two re-converted posts against their prior output (identical). `tooling/convert_project.py` imports it, so projects get every math/figure fix for free.
+
+### Two things _projects had that _posts did not (correcting my earlier "no video in the corpus")
+That claim was true for _posts, NOT _projects. Both surfaced only because the converter reports missing images and dropped liquid:
+1. **A space in an image filename** (`project_1/Lasso Regression_plot.png`). A markdown image URL cannot hold a raw space, so the link broke. Fix in transform_body: `fig_sub` percent-encodes spaces to `%20`; `copy_image` decodes before locating the file on disk. The public file keeps its real spaced name, the browser requests `%20`, served fine. Verified live (200).
+2. **A `video.liquid` embed** (project 2, episode-success.mp4, 830 KB). The generic liquid-drop would have discarded it. Added a `video_sub` in transform_body -> HTML5 `<video controls muted loop playsinline>` (no autoplay, to avoid surprise motion). The mp4 is copied by the same image pass. Verified: readyState 4, controls present.
+
+### Astro side
+- New `projects` content collection (content.config.ts): title, description, thumb, importance.
+- `convert_project.py`: SLUGS maps 1_project..5_project to real slugs (mta-transit-prediction, gaze-guided-rl, swap-regret, smallgraph-gcn, single-gpu-moe). Keeps `importance` for ordering, `thumb` for the card.
+- `/projects/` gallery (src/pages/projects/index.astro): 2-col card grid, thumbnail + title + description, ordered by importance (MoE=1 first). `/projects/<slug>/` detail pages with giscus, no Subscribe/book chrome.
+- "Projects" added to the nav between Book and Notes.
+- `.post-video` style added to post.css.
+
+### Images: earlier "leave the 47 uncopied" is now partly reversed
+The project image folders (project_1..5 + proj2-1.jpg, 30 files) are now copied because the projects reference them. public/img went 135 -> 171 files. The genuinely-unused leftovers (old Projects-page duplicates that no ported content references, publication_preview, theme junk) remain uncopied. Copying is driven by references, so nothing orphaned.
+
+### Verified
+- Build 114 pages, 0 KaTeX errors across all 5 projects (swap-regret has 58 display-math blocks, all clean).
+- 30 project images referenced, 0 missing, including the `%20` space one. Video loads with controls.
+- Gallery ordered MoE, GCN, Gaze, Swap-regret, MTA (importance 1-5). Nav shows Projects.
+
 ## 2026-07-20: Book section (step 4)
 
 The ML Theory posts assembled into an ordered book. User approved the structure with 5 decisions: exclude rl-intro and ds1, move subgradient into the SVM part before svm, keep ml-history as ch2 of Foundations, keep loss-functions closing "The learning problem", keep dual-problem after svm.

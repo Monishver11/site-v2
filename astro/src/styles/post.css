@@ -45,6 +45,13 @@
   margin: 1.4rem auto;
   border-radius: 4px;
 }
+.prose .post-video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.4rem auto;
+  border-radius: 4px;
+}
 .prose .caption {
   text-align: center;
   font-style: italic;
