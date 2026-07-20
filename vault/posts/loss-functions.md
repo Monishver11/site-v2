@@ -12,5 +12,6 @@ Full post: [Loss Functions - Regression and Classification](https://monishver11.
 
 - [[regularization]] — next in Loss and regularization
 - [[erm]] — the loss is what ERM minimises
+- [[empirical-risk-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

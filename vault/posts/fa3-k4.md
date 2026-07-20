@@ -12,6 +12,8 @@ Full post: [K4 in CuTe [FA3]](https://monishver11.github.io/site-v2/blog/fa3-k4/
 
 - [[fa3-k3]] — previous in FlashAttention 3
 - [[gemm-colfax-1]] — K4 is the WGMMA kernel
+- [[wgmma]] — concept note
+- [[warp-specialization]] — concept note
 - [[fa3-worklog]] — referenced in this post
 
 <!-- links below this line are kept when regenerating -->

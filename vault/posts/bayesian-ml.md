@@ -13,5 +13,6 @@ Full post: [Bayesian Machine Learning - Mathematical Foundations](https://monish
 - [[bayes-point-estimate]] — next in Bayesian methods
 - [[probabilistic-modeling]] — the Bayesian alternative to point estimates
 - [[gaussian-regression]] — Bayesian treatment of linear regression
+- [[bayesian-vs-frequentist]] — concept note
 
 <!-- links below this line are kept when regenerating -->

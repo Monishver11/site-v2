@@ -12,5 +12,6 @@ Full post: [Understanding the Maximum Margin Classifier](https://monishver11.git
 
 - [[svm]] — next in Support vector machines
 - [[regularization]] — max margin is L2 regularisation in disguise
+- [[margin-maximization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

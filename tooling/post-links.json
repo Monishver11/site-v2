@@ -127,6 +127,33 @@
       "simons-gemm-notes"
     ],
     "cute-layouts": ["cute", "fa3-cute", "fa3-k1"],
-    "online-softmax": ["fa3-k2", "fa3-worklog"]
+    "online-softmax": ["fa3-k2", "fa3-worklog"],
+
+    "empirical-risk-minimization": ["erm", "supervised-learning", "loss-functions"],
+    "bias-variance-tradeoff": ["regularization", "intro-to-ensemble-methods"],
+    "regularization-as-constraint": ["regularization", "l1-l2-reg-indepth"],
+    "convex-duality": ["dual-problem", "svm-dual-problem"],
+    "kernels-as-inner-products": [
+      "kernel-trick", "feature-maps", "svm-solution-span-of-data"
+    ],
+    "margin-maximization": ["max-margin-classifier", "svm"],
+    "maximum-likelihood": ["mle", "probabilistic-modeling"],
+    "bayesian-vs-frequentist": [
+      "bayesian-ml", "bayes-point-estimate", "bayes-decision-theory"
+    ],
+    "regret-minimization": ["online-learning", "wma", "online-to-batch"],
+    "boosting-as-additive-modeling": [
+      "fsam", "adaboost", "intro-gradient-boosting", "gradient-boosting"
+    ],
+    "variance-reduction-by-averaging": [
+      "bagging", "random-forest", "intro-to-ensemble-methods"
+    ],
+    "arithmetic-intensity": ["gpu-intro", "gpu-notes", "simons-gemm-notes"],
+    "tiling": ["simons-gemm-notes", "gemm-colfax-1", "fa3-k2"],
+    "memory-coalescing": ["gpu-intro", "simons-gemm-notes"],
+    "wgmma": ["gemm-colfax-1", "fa3-k4"],
+    "warp-specialization": ["fa3-worklog", "fa3-k4"],
+    "mapreduce-model": ["big-data-4-mapreduce", "big-data-5-mr-dp", "spark-job"],
+    "exactly-once-semantics": ["big-data-10-kafka", "big-data-11-flink"]
   }
 }

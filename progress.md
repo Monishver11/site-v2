@@ -80,8 +80,53 @@ Result: **216 links across 92 of 93 posts.** Only `nyu-grad` is isolated, correc
 - Quartz build: 97 input files, 218 emitted, 0 broken internal links, no `goals.html`.
 - Browser: online-softmax zettel shows the populated graph, backlinks including the new "K2 in CuTe [FA3]" stub, and its Related section; the fa3-k2 stub shows a correct absolute outbound link and a backlink to the zettel.
 
-### Known issue, NOT fixed (needs user decision)
-The Quartz footer links (quartz.layout.ts) are hardcoded to `https://monishver11.github.io` and `https://monishver11.github.io/blog/`, which point at the OLD site, not staging. A reader on /notes clicking "Blog" leaves for the old site. Pre-existing, unrelated to this round.
+### Quartz footer fixed
+Footer links were hardcoded to the bare domain, so a reader on staging /notes clicking "Blog" was sent to the OLD site. They now read `SITE_BASE_URL` (set in deploy.yml, defaults to the staging origin in quartz.layout.ts). One more thing to flip at prod flip.
+
+## 2026-07-20: 18 zettels written from the corpus
+
+User chose option 3 (I draft them from post content) over extracting candidates for them to write. Noted the tradeoff at the time: these are my words describing their ideas. They are a starting point to be rewritten in the user's voice, not finished notes.
+
+me.md rule 13 says to ask for `notes-style.md` on a notes task. Asked; it does not exist yet and the user said to proceed without it. Style followed is the three existing seed zettels: one idea, 2-4 short paragraphs, a concrete example rather than a bare definition (me.md rule 11), ending by linking outward.
+
+Each was written from excerpts of the relevant posts so the framing is the user's, not generic. Where their language differs from the textbook default, theirs was kept: `bias-variance-tradeoff` leads with approximation error vs estimation error and hypothesis-space size, which is how the regularization post frames it, and mentions bias/variance as the classical synonym.
+
+Written (21 zettels total now):
+- Learning theory (11): empirical-risk-minimization, bias-variance-tradeoff, regularization-as-constraint, convex-duality, kernels-as-inner-products, margin-maximization, maximum-likelihood, bayesian-vs-frequentist, regret-minimization, boosting-as-additive-modeling, variance-reduction-by-averaging
+- GPU (5 new): arithmetic-intensity, tiling, memory-coalescing, wgmma, warp-specialization
+- Systems (2): mapreduce-model, exactly-once-semantics
+
+Naming constraint worth remembering: **zettel filenames cannot collide with post slugs**, because Quartz resolves wikilinks by filename. `kernel-trick` is a post, so the concept note is `kernels-as-inner-products`. Same for tiling vs the GEMM posts.
+
+Links: 216 -> **262 across 92 posts**, plus 21 interlinked zettels. 0 broken wikilinks anywhere. `vault/index.md` now lists all 21 grouped by area.
+
+## 2026-07-20: /notes entry point + graph depth
+
+User reported "the zettels are just 3, and I don't see the full graph". Two different things, one of which was not a bug:
+
+1. **Graph depth.** The sidebar panel is the LOCAL graph, and Quartz's default is `depth: 1`, so it only ever showed a note's immediate neighbours (about 8 nodes). The full graph was always there but hidden behind the small expand icon on the panel. Set `localGraph: { depth: 2, scale: 1.2 }` in quartz.layout.ts; the sidebar now shows a real neighbourhood.
+2. **Only 3 zettels is accurate, not a display problem.** There are exactly 3 atomic notes; the 93 posts are stubs in a separate folder. The real issue was that `vault/index.md` listed only those 3 and never mentioned the posts, so /notes read as a 3-note site. It also still linked to the OLD site's blog (same bug the footer had).
+
+`vault/index.md` rewritten as a real entry point: explains zettels vs post stubs, points at the expand icon for the full graph, and lists one entry per reading thread (preface-ml, gpu-intro, simons-gemm-notes, cute, fa3-worklog, big-data-1-intro, silu-mul-...-kernel-vllm). 0 broken links, all 10 wikilinks resolve.
+
+NOTE: the blog URL in index.md is hardcoded to the staging origin. It is prose, so no generator owns it; added to the prod-flip checklist in HANDOFF.
+
+## 2026-07-20: PUBLISHED to staging (commit 071010c)
+
+Everything above is live at https://monishver11.github.io/site-v2/. Deploy run 29750414583, success.
+
+### Privacy gap caught at the last moment
+`goals.md` was quartz-ignored but NOT gitignored, and this repo is PUBLIC. Quartz-ignoring only stops a file publishing to /notes; it does nothing about the repo itself. Personal goals would have been readable on GitHub. Now gitignored, matching the daily notes it feeds. Tradeoff accepted: it is local-only, so a fresh clone has no goals.md and the rollover prints `_No goals.md yet._` until recreated.
+
+**General lesson for this repo: quartz-ignored != private. The repo is public. Anything that should stay personal needs BOTH.**
+
+Pre-push audit (worth repeating before any future publish): confirmed only `vault/daily/README.md` from the daily folder, no `goals.md`, no `astro/dist` or `quartz/public` build output, and checked `.obsidian/workspace.json` for leaked file paths (clean, its only "daily" mentions are command-palette entries).
+
+### Verified live
+- 93 blog posts and 93 vault stubs in the repo, 141 images. No daily notes, no goals.md.
+- `/site-v2/`, `/blog/`, `/blog/svm/`, `/blog/big-data-10-kafka/`, `/notes/`, `/404.html` all 200. `/notes/goals` correctly 404.
+- big-data-10-kafka renders all 17 images including the 3 recovered ones (750x296, 652x277, 699x342), no raw liquid, 0 KaTeX errors.
+- notes/posts/svm shows 6 backlinks (dual-problem, feature-maps, kernel-trick, max-margin-classifier, multiclass-svm, subgradient), 0 broken internal links, and footer links now correctly pointing at /site-v2.
 
 ## 2026-07-20: Post port, step 2 (90 posts converted, 8 math errors outstanding)
 

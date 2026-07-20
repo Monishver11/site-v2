@@ -12,5 +12,6 @@ Full post: [On-line to Batch Conversion](https://monishver11.github.io/site-v2/b
 
 - [[fpl-proof]] — previous in Online learning
 - [[erm]] — converting regret bounds into risk bounds
+- [[regret-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

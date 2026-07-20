@@ -11,5 +11,7 @@ Full post: [Introduction to Ensemble Methods](https://monishver11.github.io/site
 ## Related
 
 - [[bagging]] — next in Ensembles
+- [[bias-variance-tradeoff]] — concept note
+- [[variance-reduction-by-averaging]] — concept note
 
 <!-- links below this line are kept when regenerating -->

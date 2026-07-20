@@ -13,5 +13,8 @@ Full post: [GEMM Kernel Optimization Notes](https://monishver11.github.io/site-v
 - [[gemm-colfax-1]] — next in GEMM
 - [[gpu-intro]] — GEMM as the first real optimisation target
 - [[gpu-memory-hierarchy]] — concept note
+- [[arithmetic-intensity]] — concept note
+- [[tiling]] — concept note
+- [[memory-coalescing]] — concept note
 
 <!-- links below this line are kept when regenerating -->

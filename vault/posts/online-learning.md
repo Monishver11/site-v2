@@ -11,5 +11,6 @@ Full post: [Online Learning in ML - A Beginner’s Guide to Adaptive Learning](h
 ## Related
 
 - [[wma]] — next in Online learning
+- [[regret-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

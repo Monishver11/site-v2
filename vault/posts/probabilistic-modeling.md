@@ -12,5 +12,6 @@ Full post: [Unveiling Probabilistic Modeling](https://monishver11.github.io/site
 
 - [[mle]] — next in Probabilistic modeling
 - [[bayesian-ml]] — the Bayesian alternative to point estimates
+- [[maximum-likelihood]] — concept note
 
 <!-- links below this line are kept when regenerating -->

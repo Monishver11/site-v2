@@ -13,6 +13,7 @@ Full post: [FlashAttention 3 - A Worklog[WIP]](https://monishver11.github.io/sit
 - [[fa3-k1]] — next in FlashAttention 3
 - [[transformer-block-accounting]] — the FLOP counts FA3 is optimising
 - [[online-softmax]] — concept note
+- [[warp-specialization]] — concept note
 - [[fa3-cute]] — referenced in this post
 - [[fa3-k2]] — referenced in this post
 - [[fa3-k3]] — referenced in this post

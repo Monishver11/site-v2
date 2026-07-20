@@ -12,5 +12,6 @@ Full post: [Generalized Linear Models Explained - Leveraging MLE for Regression 
 
 - [[probabilistic-modeling]] — previous in Probabilistic modeling
 - [[generative-models]] — next in Probabilistic modeling
+- [[maximum-likelihood]] — concept note
 
 <!-- links below this line are kept when regenerating -->

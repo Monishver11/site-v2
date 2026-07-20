@@ -12,5 +12,6 @@ Full post: [Bagging - Bootstrap Aggregation](https://monishver11.github.io/site-
 
 - [[intro-to-ensemble-methods]] — previous in Ensembles
 - [[random-forest]] — next in Ensembles
+- [[variance-reduction-by-averaging]] — concept note
 
 <!-- links below this line are kept when regenerating -->

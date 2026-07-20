@@ -12,5 +12,6 @@ Full post: [Understanding the Supervised Learning Setup](https://monishver11.git
 
 - [[erm]] — next in Learning setup
 - [[rl-intro]] — how the RL setup differs from supervised learning
+- [[empirical-risk-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

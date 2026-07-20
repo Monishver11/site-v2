@@ -13,5 +13,6 @@ Full post: [Understanding the Weighted Majority Algorithm in Online Learning](ht
 - [[online-learning]] — previous in Online learning
 - [[rwm]] — next in Online learning
 - [[ewa]] — continuous weighting of the same idea
+- [[regret-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

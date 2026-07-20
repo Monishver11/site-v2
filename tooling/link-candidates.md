@@ -8,27 +8,85 @@ Evidence types: a direct link already in the post body (hard fact), a
 zettel title whose terms appear in the post, or a rare shared tag.
 Generic tags are excluded: a tag on 30 posts is not evidence.
 
-43 suggestions across 20 posts.
+144 suggestions across 59 posts.
 
 ## aleksagordic-gpu-blog-notes  (Reading Notes from Aleksa Gordic's GPU BlogPost)
+- `[[arithmetic-intensity]]`  <- zettel title "Arithmetic intensity" terms appear (min 2x)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 1x)
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 3x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 1x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 2x)
+
+## bagging  (Bagging - Bootstrap Aggregation)
+- `[[variance-reduction-by-averaging]]`  <- zettel title "Variance reduction by averaging" terms appear (min 1x)
+
+## bayes-conditional-models  (Bayesian Conditional Models)
+- `[[bayesian-vs-frequentist]]`  <- zettel title "Bayesian vs frequentist" terms appear (min 10x)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 4x)
 
 ## bayes-decision-theory  (Bayesian Decision Theory - Concepts and Recap)
+- `[[bayesian-vs-frequentist]]`  <- zettel title "Bayesian vs frequentist" terms appear (min 5x)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 1x)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 3x)
 - `[[nb-continuous-features]]`  <- post links to it directly
 
 ## bayes-point-estimate  (Conjugate Priors and Bayes Point Estimates)
 - `[[bayesian-ml]]`  <- post links to it directly
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 2x)
+
+## bayesian-ml  (Bayesian Machine Learning - Mathematical Foundations)
+- `[[bayesian-vs-frequentist]]`  <- zettel title "Bayesian vs frequentist" terms appear (min 6x)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 5x)
+
+## big-data-10-kafka  (Apache Kafka)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 1x)
+
+## big-data-11-flink  (Apache Flink)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 3x)
 
 ## big-data-3-hdfs  (Hadoop Distributed File System (HDFS))
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 1x)
+- `[[mapreduce-model]]`  <- zettel title "MapReduce model" terms appear (min 6x)
+
+## big-data-4-mapreduce  (Big Data Processing Concepts & MapReduce)
+- `[[mapreduce-model]]`  <- zettel title "MapReduce model" terms appear (min 1x)
+
+## big-data-8-hbase  (Apache HBase)
+- `[[mapreduce-model]]`  <- zettel title "MapReduce model" terms appear (min 5x)
 
 ## cute  (CuTe DSL - Notes)
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 11x)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 1x)
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 2x)
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 1x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 59x)
+
+## doubling-trick  (Doubling Trick - A Clever Strategy to Handle Unknown Horizons)
+- `[[regret-minimization]]`  <- zettel title "Regret minimization" terms appear (min 1x)
+
+## dual-problem  (The Dual Problem of SVM)
+- `[[convex-duality]]`  <- zettel title "Convex duality" terms appear (min 23x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 1x)
+- `[[margin-maximization]]`  <- zettel title "Margin maximization" terms appear (min 2x)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 1x)
+
+## eagle-test-dp  (Investigating Flaky `test_eagle_dp` — Batch Invariance Failure on L4 GPUs)
+- `[[bias-variance-tradeoff]]`  <- zettel title "Bias-variance tradeoff" terms appear (min 1x)
+
+## erm  (Empirical Risk Minimization (ERM))
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 3x)
+
+## ewa  (Exponential Weighted Average Algorithm)
+- `[[regret-minimization]]`  <- zettel title "Regret minimization" terms appear (min 2x)
 
 ## fa3-cute  (CuTe DSL fundamentals and primitives [FA3])
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 44x)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 1x)
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 2x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 2x)
+- `[[tiling]]`  <- zettel title "Tiling" terms appear (min 1x)
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 3x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 55x)
 
 ## fa3-k1  (K1 in CuTe [FA3])
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 2x)
@@ -40,19 +98,26 @@ Generic tags are excluded: a tag on 30 posts is not evidence.
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 2x)
 - `[[fa3-k3]]`  <- post links to it directly
 - `[[fa3-worklog]]`  <- post links to it directly
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 1x)
 - `[[online-softmax]]`  <- zettel title "Online softmax" terms appear (min 1x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 2x)
 
 ## fa3-k3  (K3 in CuTe [FA3])
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 3x)
 - `[[fa3-k4]]`  <- post links to it directly
 - `[[fa3-worklog]]`  <- post links to it directly
 - `[[online-softmax]]`  <- zettel title "Online softmax" terms appear (min 1x)
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 1x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 6x)
 
 ## fa3-k4  (K4 in CuTe [FA3])
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 9x)
 - `[[fa3-worklog]]`  <- post links to it directly
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 1x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 50x)
 
 ## fa3-worklog  (FlashAttention 3 - A Worklog[WIP])
+- `[[arithmetic-intensity]]`  <- zettel title "Arithmetic intensity" terms appear (min 7x)
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 13x)
 - `[[fa3-cute]]`  <- post links to it directly
 - `[[fa3-k1]]`  <- post links to it directly
@@ -60,35 +125,149 @@ Generic tags are excluded: a tag on 30 posts is not evidence.
 - `[[fa3-k3]]`  <- post links to it directly
 - `[[fa3-k4]]`  <- post links to it directly
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 14x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 5x)
 - `[[online-softmax]]`  <- zettel title "Online softmax" terms appear (min 29x)
+- `[[tiling]]`  <- zettel title "Tiling" terms appear (min 33x)
 - `[[transformer-block-accounting]]`  <- post links to it directly
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 7x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 53x)
+
+## fpl  (Follow the Leader (FL) and Follow the Perturbed Leader (FPL) in Online Learning)
+- `[[regret-minimization]]`  <- zettel title "Regret minimization" terms appear (min 1x)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 2x)
+
+## fpl-proof  (My Understanding of "Efficient Algorithms for Online Decision Problems" Paper)
+- `[[regret-minimization]]`  <- zettel title "Regret minimization" terms appear (min 1x)
+
+## fsam  (Forward Stagewise Additive Modeling)
+- `[[boosting-as-additive-modeling]]`  <- zettel title "Boosting as additive modeling" terms appear (min 2x)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 1x)
+
+## gaussian-regression  (Gaussian Regression - A Bayesian Approach to Linear Regression)
+- `[[bayesian-vs-frequentist]]`  <- zettel title "Bayesian vs frequentist" terms appear (min 1x)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 2x)
 
 ## gb-in-practice  (Gradient Boosting in Practice)
 - `[[binomial-boost]]`  <- post links to it directly
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 1x)
 
 ## gemm-colfax-1  (CUTLASS WGMMA on Hopper - Notes)
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 11x)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 2x)
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 2x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 1x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 2x)
+- `[[tiling]]`  <- zettel title "Tiling" terms appear (min 7x)
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 2x)
+- `[[wgmma]]`  <- zettel title "WGMMA" terms appear (min 284x)
+
+## generative-models  (An Introduction to Generative Models - Naive Bayes for Binary Features)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 4x)
 
 ## gpu-intro  (GPU Essentials - A Concise Technical Guide)
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 2x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 2x)
+
+## gpu-notes  (GPU Notes)
+- `[[arithmetic-intensity]]`  <- zettel title "Arithmetic intensity" terms appear (min 1x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 5x)
+- `[[tiling]]`  <- zettel title "Tiling" terms appear (min 4x)
+
+## gradient-boosting  (Gradient Boosting / "Anyboost")
+- `[[boosting-as-additive-modeling]]`  <- zettel title "Boosting as additive modeling" terms appear (min 1x)
+
+## gradient-descent  (Gradient Descent - A Detailed Walkthrough)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 1x)
+
+## intro-gradient-boosting  (Introduction to Gradient Boosting)
+- `[[boosting-as-additive-modeling]]`  <- zettel title "Boosting as additive modeling" terms appear (min 1x)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 2x)
+
+## kernel-trick  (Understanding the Kernel Trick)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 9x)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 1x)
+
+## l1-l2-reg-indepth  (L1 and L2 Regularization - Nuanced Details)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 1x)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 11x)
+
+## max-margin-classifier  (Understanding the Maximum Margin Classifier)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 2x)
+
+## mle  (Generalized Linear Models Explained - Leveraging MLE for Regression and Classification)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 6x)
 
 ## multiclass-loss  (Multiclass Logistic Regression & Multiclass Perceptron Algorithm)
 - `[[online-softmax]]`  <- zettel title "Online softmax" terms appear (min 1x)
 
+## multiclass-svm  (Multiclass Classification with SVM)
+- `[[margin-maximization]]`  <- zettel title "Margin maximization" terms appear (min 1x)
+
+## multivariate-gnb  (Multivariate Gaussian Distribution and Naive Bayes)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 1x)
+
+## nb-continuous-features  (Gaussian Naive Bayes - A Natural Extension)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 3x)
+
+## online-to-batch  (On-line to Batch Conversion)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 3x)
+- `[[regret-minimization]]`  <- zettel title "Regret minimization" terms appear (min 3x)
+
+## probabilistic-modeling  (Unveiling Probabilistic Modeling)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 3x)
+
+## probability-1  (Understanding the Basics of Probability Theory for Machine Learning)
+- `[[bayesian-vs-frequentist]]`  <- zettel title "Bayesian vs frequentist" terms appear (min 1x)
+
+## probability-2  (Advanced Probability Concepts for Machine Learning)
+- `[[bias-variance-tradeoff]]`  <- zettel title "Bias-variance tradeoff" terms appear (min 1x)
+- `[[margin-maximization]]`  <- zettel title "Margin maximization" terms appear (min 2x)
+- `[[maximum-likelihood]]`  <- zettel title "Maximum likelihood" terms appear (min 1x)
+- `[[variance-reduction-by-averaging]]`  <- zettel title "Variance reduction by averaging" terms appear (min 1x)
+
+## random-forest  (Random Forests)
+- `[[variance-reduction-by-averaging]]`  <- zettel title "Variance reduction by averaging" terms appear (min 6x)
+
 ## rwm  (Randomized Weighted Majority Algorithm)
 - `[[doubling-trick]]`  <- post links to it directly
+
+## sgd  (Understanding Stochastic Gradient Descent (SGD))
+- `[[bias-variance-tradeoff]]`  <- zettel title "Bias-variance tradeoff" terms appear (min 1x)
 
 ## silu-mul-fp8-block-quant-compile-vllm  (SiLU+Mul+FP8 Block Quant Pattern Matching Pipeline - vLLM Notes)
 - `[[cute-layouts]]`  <- zettel title "CuTe layouts" terms appear (min 1x)
 - `[[silu-mul-fp8-block-quant-kernel-vllm]]`  <- post links to it directly
 
 ## silu-mul-fp8-block-quant-kernel-vllm  (Fused SiLU+Mul+FP8 Block Quantization CUDA Kernel - vLLM Notes)
+- `[[exactly-once-semantics]]`  <- zettel title "Exactly-once semantics" terms appear (min 1x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 1x)
 - `[[silu-mul-fp8-block-quant-compile-vllm]]`  <- post links to it directly
+- `[[warp-specialization]]`  <- zettel title "Warp specialization" terms appear (min 2x)
 
 ## simons-gemm-notes  (GEMM Kernel Optimization Notes)
+- `[[arithmetic-intensity]]`  <- zettel title "Arithmetic intensity" terms appear (min 10x)
 - `[[gpu-intro]]`  <- post links to it directly
 - `[[gpu-memory-hierarchy]]`  <- zettel title "GPU memory hierarchy" terms appear (min 3x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 5x)
+- `[[memory-coalescing]]`  <- zettel title "Memory coalescing" terms appear (min 10x)
+- `[[tiling]]`  <- zettel title "Tiling" terms appear (min 33x)
 
 ## structured-perceptron-svm  (Structured Perceptron & Structured SVM)
 - `[[structured-prediction]]`  <- post links to it directly
+
+## supervised-learning  (Understanding the Supervised Learning Setup)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 2x)
+
+## svm  (Support Vector Machines(SVM) - From Hinge Loss to Optimization)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 4x)
+
+## svm-dual-problem  (Demystifying SVMs - Understanding Complementary Slackness and Support Vectors)
+- `[[convex-duality]]`  <- zettel title "Convex duality" terms appear (min 7x)
+- `[[kernels-as-inner-products]]`  <- zettel title "Kernels as inner products" terms appear (min 3x)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 8x)
+
+## svm-solution-span-of-data  (SVM Solution in the Span of the Data)
+- `[[regularization-as-constraint]]`  <- zettel title "Regularization as a constraint" terms appear (min 1x)
+
+## wrapping-ml-basics  (Wrapping Up Our ML Foundations Journey)
+- `[[empirical-risk-minimization]]`  <- zettel title "Empirical risk minimization" terms appear (min 1x)

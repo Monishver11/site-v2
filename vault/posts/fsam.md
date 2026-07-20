@@ -13,5 +13,6 @@ Full post: [Forward Stagewise Additive Modeling](https://monishver11.github.io/s
 - [[intro-gradient-boosting]] — next in Gradient boosting
 - [[adaboost]] — AdaBoost is forward stagewise additive modelling
 - [[gradient-boosting]] — gradient boosting as FSAM with a gradient step
+- [[boosting-as-additive-modeling]] — concept note
 
 <!-- links below this line are kept when regenerating -->

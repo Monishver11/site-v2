@@ -13,5 +13,7 @@ Full post: [GPU Essentials - A Concise Technical Guide](https://monishver11.gith
 - [[gpu-notes]] — next in GPU fundamentals
 - [[simons-gemm-notes]] — GEMM as the first real optimisation target
 - [[gpu-memory-hierarchy]] — concept note
+- [[arithmetic-intensity]] — concept note
+- [[memory-coalescing]] — concept note
 
 <!-- links below this line are kept when regenerating -->

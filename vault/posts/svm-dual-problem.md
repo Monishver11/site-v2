@@ -12,5 +12,6 @@ Full post: [Demystifying SVMs - Understanding Complementary Slackness and Suppor
 
 - [[dual-problem]] — previous in Support vector machines
 - [[svm-solution-span-of-data]] — next in Support vector machines
+- [[convex-duality]] — concept note
 
 <!-- links below this line are kept when regenerating -->

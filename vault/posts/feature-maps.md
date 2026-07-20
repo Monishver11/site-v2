@@ -12,5 +12,6 @@ Full post: [Unleashing the Power of Linear Models - Tackling Nonlinearity with F
 
 - [[kernel-trick]] — next in Kernels
 - [[svm]] — why SVMs need nonlinear features
+- [[kernels-as-inner-products]] — concept note
 
 <!-- links below this line are kept when regenerating -->

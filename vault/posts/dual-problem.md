@@ -13,5 +13,6 @@ Full post: [The Dual Problem of SVM](https://monishver11.github.io/site-v2/blog/
 - [[svm]] — previous in Support vector machines
 - [[svm-dual-problem]] — next in Support vector machines
 - [[kernel-trick]] — the dual is what makes kernels possible
+- [[convex-duality]] — concept note
 
 <!-- links below this line are kept when regenerating -->

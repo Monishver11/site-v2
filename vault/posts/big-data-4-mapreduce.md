@@ -13,5 +13,6 @@ Full post: [Big Data Processing Concepts & MapReduce](https://monishver11.github
 - [[big-data-3-hdfs]] — previous in Big data systems
 - [[big-data-5-mr-dp]] — next in Big data systems
 - [[spark-job]] — Spark against the MapReduce model
+- [[mapreduce-model]] — concept note
 
 <!-- links below this line are kept when regenerating -->

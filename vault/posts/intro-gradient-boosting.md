@@ -12,5 +12,6 @@ Full post: [Introduction to Gradient Boosting](https://monishver11.github.io/sit
 
 - [[fsam]] — previous in Gradient boosting
 - [[gradient-boosting]] — next in Gradient boosting
+- [[boosting-as-additive-modeling]] — concept note
 
 <!-- links below this line are kept when regenerating -->

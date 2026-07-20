@@ -16,5 +16,6 @@ Full post: [Support Vector Machines(SVM) - From Hinge Loss to Optimization](http
 - [[feature-maps]] — why SVMs need nonlinear features
 - [[kernel-trick]] — the kernel trick applied to the SVM dual
 - [[multiclass-svm]] — the multiclass generalisation
+- [[margin-maximization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

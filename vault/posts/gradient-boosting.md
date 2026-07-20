@@ -14,5 +14,6 @@ Full post: [Gradient Boosting / "Anyboost"](https://monishver11.github.io/site-v
 - [[binomial-boost]] — next in Gradient boosting
 - [[fsam]] — gradient boosting as FSAM with a gradient step
 - [[gb-in-practice]] — theory into practice
+- [[boosting-as-additive-modeling]] — concept note
 
 <!-- links below this line are kept when regenerating -->

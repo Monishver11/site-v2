@@ -12,5 +12,6 @@ Full post: [SVM Solution in the Span of the Data](https://monishver11.github.io/
 
 - [[svm-dual-problem]] — previous in Support vector machines
 - [[kernel-trick]] — representer-theorem flavour of the same idea
+- [[kernels-as-inner-products]] — concept note
 
 <!-- links below this line are kept when regenerating -->

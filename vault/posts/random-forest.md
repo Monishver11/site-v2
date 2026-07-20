@@ -13,5 +13,6 @@ Full post: [Random Forests](https://monishver11.github.io/site-v2/blog/random-fo
 - [[bagging]] — previous in Ensembles
 - [[adaboost]] — next in Ensembles
 - [[decision-trees]] — the base learner
+- [[variance-reduction-by-averaging]] — concept note
 
 <!-- links below this line are kept when regenerating -->

@@ -14,5 +14,6 @@ Full post: [Empirical Risk Minimization (ERM)](https://monishver11.github.io/sit
 - [[loss-functions]] — the loss is what ERM minimises
 - [[gradient-descent]] — how the empirical risk actually gets minimised
 - [[online-to-batch]] — converting regret bounds into risk bounds
+- [[empirical-risk-minimization]] — concept note
 
 <!-- links below this line are kept when regenerating -->

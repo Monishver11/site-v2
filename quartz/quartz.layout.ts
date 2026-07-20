@@ -47,7 +47,12 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Explorer(),
   ],
   right: [
-    Component.Graph(),
+    // depth 1 (the default) shows only immediate neighbours, which made the
+    // sidebar graph look almost empty. depth 2 shows a note's neighbourhood.
+    // The full graph is still behind the expand icon on the panel.
+    Component.Graph({
+      localGraph: { depth: 2, scale: 1.2 },
+    }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
   ],

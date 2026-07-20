@@ -13,5 +13,6 @@ Full post: [Boosting and AdaBoost](https://monishver11.github.io/site-v2/blog/ad
 - [[random-forest]] — previous in Ensembles
 - [[fsam]] — AdaBoost is forward stagewise additive modelling
 - [[decision-trees]] — stumps as weak learners
+- [[boosting-as-additive-modeling]] — concept note
 
 <!-- links below this line are kept when regenerating -->

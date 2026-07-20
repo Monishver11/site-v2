@@ -14,6 +14,6 @@ Full post: [Understanding the Kernel Trick](https://monishver11.github.io/site-v
 - [[svm]] — the kernel trick applied to the SVM dual
 - [[dual-problem]] — the dual is what makes kernels possible
 - [[svm-solution-span-of-data]] — representer-theorem flavour of the same idea
+- [[kernels-as-inner-products]] — concept note
 
 <!-- links below this line are kept when regenerating -->
-

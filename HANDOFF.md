@@ -54,7 +54,8 @@ The script is idempotent with catch-up, so running it repeatedly is a no-op and 
 4. Build the Book section: ordered manifest of the ML Theory posts (parts/chapters, sidebar tree, prev/next). User wants involvement in the ordering.
 5. Reads content: user will supply their list (reads.json holds it: title/href/by/note fields).
 6. Weekly review automation: draft from daily logs for user to edit, publish to /reviews.
-7. Prod flip when port is complete: set BASE_PATH and NOTES_BASE_URL to root values, remove fix-base step, move Pages to the main repo. Old permalink format was /blog/:year/:title/ so add redirects or match slugs when flipping (current new format is /blog/<slug>/, NOT year-based; decide redirect strategy with user).
+7. Prod flip. Also at flip: re-run `BLOG_BASE=https://monishver11.github.io python3 tooling/make_stubs.py`, update `SITE_BASE_URL` in deploy.yml, and fix the one hardcoded blog URL in `vault/index.md` (it is prose, so no generator owns it).
+   Prod flip when port is complete: set BASE_PATH and NOTES_BASE_URL to root values, remove fix-base step, move Pages to the main repo. Old permalink format was /blog/:year/:title/ so add redirects or match slugs when flipping (current new format is /blog/<slug>/, NOT year-based; decide redirect strategy with user).
 
 ## Gotchas
 

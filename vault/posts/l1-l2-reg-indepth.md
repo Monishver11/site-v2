@@ -11,5 +11,6 @@ Full post: [L1 and L2 Regularization - Nuanced Details](https://monishver11.gith
 ## Related
 
 - [[regularization]] — previous in Loss and regularization
+- [[regularization-as-constraint]] — concept note
 
 <!-- links below this line are kept when regenerating -->

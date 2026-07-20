@@ -12,5 +12,6 @@ Full post: [Apache Flink](https://monishver11.github.io/site-v2/blog/big-data-11
 
 - [[big-data-10-kafka]] — previous in Big data systems
 - [[spark-job]] — next in Big data systems
+- [[exactly-once-semantics]] — concept note
 
 <!-- links below this line are kept when regenerating -->

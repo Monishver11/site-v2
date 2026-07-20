@@ -12,5 +12,6 @@ Full post: [Conjugate Priors and Bayes Point Estimates](https://monishver11.gith
 
 - [[bayesian-ml]] — previous in Bayesian methods
 - [[bayes-decision-theory]] — next in Bayesian methods
+- [[bayesian-vs-frequentist]] — concept note
 
 <!-- links below this line are kept when regenerating -->
