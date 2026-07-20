@@ -24,10 +24,15 @@ OUT_DIR = Path(__file__).resolve().parent.parent / "astro/src/content/blog"
 IMG_OUT = Path(__file__).resolve().parent.parent / "astro/public/img"
 
 CATEGORY_MAP = {
+    # ML-NYU is the foundations course, the 52 posts that make up the Book.
     "ML-NYU": "ML Theory",
-    "ADV-ML-NYU": "ML Theory",
-    "RL-NYU": "ML Theory",
-    "DS-NYU": "ML Theory",
+    # Everything below is NOT foundations material and goes to Misc, so it does
+    # not land in the Book. ADV-ML-NYU is the Advanced ML course (8 online-
+    # learning posts, a distinct course from foundations). RL-NYU and DS-NYU
+    # hold one post each (rl-intro, ds1); ds1 is distributed systems, not ML.
+    "ADV-ML-NYU": "Misc",
+    "RL-NYU": "Misc",
+    "DS-NYU": "Misc",
     "GPU-NYU": "GPU & Performance",
     "LLMR-NYU": "GPU & Performance",
     "RBDA-NYU": "Big Data Systems",

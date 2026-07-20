@@ -3,7 +3,7 @@ title: "On-line to Batch Conversion"
 date: 2025-01-30
 description: "Understanding how online learning algorithms can be used to derive hypotheses with small generalization error in a stochastic setting."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 In previous sections, we explored various algorithms for online learning, such as the **Perceptron** and **Winnow algorithms**, analyzing their performance within the **mistake model**—a setting where no assumptions are made about how the training sequence is generated.  
 

@@ -3,7 +3,7 @@ title: "Exponential Weighted Average Algorithm"
 date: 2025-01-25
 description: "Delve into the Exponential Weighted Average Algorithm, its regret bounds, and the mathematical proof ensuring efficient loss minimization."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 The **Exponential Weighted Average Algorithm (EWAA)** is an online learning algorithm that provides elegant guarantees for minimizing regret in adversarial settings. It extends the principles of the Weighted Majority Algorithm by incorporating exponential weight updates, making it particularly effective for handling convex loss functions.
 

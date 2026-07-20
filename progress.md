@@ -83,6 +83,42 @@ Result: **216 links across 92 of 93 posts.** Only `nyu-grad` is isolated, correc
 ### Quartz footer fixed
 Footer links were hardcoded to the bare domain, so a reader on staging /notes clicking "Blog" was sent to the OLD site. They now read `SITE_BASE_URL` (set in deploy.yml, defaults to the staging origin in quartz.layout.ts). One more thing to flip at prod flip.
 
+## 2026-07-20: Book section (step 4)
+
+The ML Theory posts assembled into an ordered book. User approved the structure with 5 decisions: exclude rl-intro and ds1, move subgradient into the SVM part before svm, keep ml-history as ch2 of Foundations, keep loss-functions closing "The learning problem", keep dual-problem after svm.
+
+### Category change: new "Misc"
+New "Misc" category added to `src/lib/categories.ts`, `src/content.config.ts` enum, and the converter's CATEGORY_MAP.
+
+CORRECTION (same day): the book was first built with 60 chapters by keying off the merged "ML Theory" category. That was wrong. The book is the FOUNDATIONS course only, the 52 ML-NYU posts, which is exactly the "~52 ML posts" the original decision log called for. The old-site categories map cleanly:
+- ML-NYU (52) -> ML Theory -> the Book.
+- ADV-ML-NYU (8, the online-learning course) -> Misc. A distinct course, not foundations.
+- RL-NYU (1, rl-intro), DS-NYU (1, ds1) -> Misc. ds1 is distributed systems, not ML.
+
+So CATEGORY_MAP sends ADV-ML-NYU, RL-NYU, DS-NYU all to Misc; only ML-NYU and ADV-ML (the enum) stay ML Theory. Final: **ML Theory 52, Misc 10**. Converter is the source of truth, so re-porting preserves this.
+
+### No duplicate URLs, same discipline as the vault
+The book does NOT create `/book/<slug>/` pages. That would put all 60 posts at two URLs with two comment threads, the trap avoided in the vault. Instead:
+- `/book/` is the table of contents (`src/pages/book/index.astro`).
+- A post that appears in the manifest gets book chrome added to its existing `/blog/<slug>/` page: a part/chapter crumb above the title, and prev/next footer nav. One URL, full reading experience.
+
+### Structure
+- `src/data/book.json`: the manifest. 12 parts (Front matter, 10 numbered, Closing), **52 chapters** (online-learning part removed). Each part has a name and optional blurb.
+- `src/lib/book.ts`: flattens the manifest into an ordered chapter list with running chapter numbers (front/back matter unnumbered, so numbers run 1-58), and gives `chapterFor(slug)` and `prevNext(slug)`. Single source of truth for both the TOC and the post chrome.
+- The TOC page throws at build time if the manifest names a post that does not exist, so a typo fails the build instead of rendering a blank chapter.
+
+Main reordering vs publication order: the online-learning and Bayesian threads were written in parallel (dates interleave them). The book separates them into Part 7 (Bayesian) and Part 8 (Online learning) so each reads start to finish.
+
+### Verified in browser
+- TOC: 60 chapters, 12 parts, numbers 1-58, all links 200.
+- svm page: crumb "Book · Support vector machines and kernels · Chapter 19", prev = subgradient, next = dual-problem (the approved ordering).
+- Edge cases: preface has next-only, wrapping-ml-basics has prev-only, fa3-k2 and rl-intro (non-book) have no chrome at all.
+- Misc category page lists exactly ds1 and rl-intro; "Misc" shows in the nav row.
+- Build 108 pages, 0 KaTeX errors, exactly 60 posts carry the book crumb.
+
+### Known, inherent to reordering (not a bug)
+A post's own prose may reference "the next post" by its publication neighbour, which the book reorders away from. E.g. svm's closing says subgradients come next, but the book places subgradient before svm. This is content for the user's own correction pass, not something the chrome can fix.
+
 ## 2026-07-20: 18 zettels written from the corpus
 
 User chose option 3 (I draft them from post content) over extracting candidates for them to write. Noted the tradeoff at the time: these are my words describing their ideas. They are a starting point to be rewritten in the user's voice, not finished notes.

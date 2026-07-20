@@ -1,21 +1,59 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { bookMeta, bookParts, bookChapters } from "../../lib/book";
+
+const posts = await getCollection("blog");
+const titleOf = new Map(posts.map((p) => [p.id.toLowerCase(), p.data.title]));
+
+// Fail the build loudly if the manifest names a post that does not exist,
+// rather than rendering a chapter with an empty title.
+const missing = bookChapters
+  .map((c) => c.slug)
+  .filter((s) => !titleOf.has(s.toLowerCase()));
+if (missing.length) {
+  throw new Error(`book.json references missing posts: ${missing.join(", ")}`);
+}
+
+const numberOf = new Map(bookChapters.map((c) => [c.slug, c.chapterNumber]));
 ---
 
-<Base
-  title="Book · Monishver Chandrasekaran"
-  description="ML fundamentals, written from first principles, as an ordered book."
->
+<Base title={`Book · Monishver Chandrasekaran`} description={bookMeta.subtitle}>
   <section class="head">
-    <h1>Book</h1>
-    <p class="sub">ML fundamentals, from first principles, in reading order</p>
+    <h1>{bookMeta.title}</h1>
+    <p class="sub">{bookMeta.subtitle}</p>
     <hr class="flourish" />
   </section>
-  <p class="empty">
-    My fifty-plus posts on machine learning theory are being assembled into
-    an ordered book &mdash; chapters, parts, and prev/next navigation. It
-    arrives with the full archive port.
-  </p>
+
+  <p class="intro">{bookMeta.intro}</p>
+
+  <nav class="toc">
+    {
+      bookParts.map((part, i) => (
+        <section class="part">
+          <h2>
+            <span class="part-label">
+              {part.name === "Front matter" || part.name === "Closing"
+                ? ""
+                : `Part ${i}`}
+            </span>
+            {part.name}
+          </h2>
+          {"blurb" in part && part.blurb && <p class="blurb">{part.blurb}</p>}
+          <ol>
+            {part.chapters.map((slug) => (
+              <li>
+                {numberOf.get(slug) && (
+                  <span class="num">{numberOf.get(slug)}</span>
+                )}
+                <a href={`/blog/${slug}/`}>{titleOf.get(slug.toLowerCase())}</a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </nav>
 </Base>
 
 <style>
@@ -23,27 +61,76 @@ import Base from "../../layouts/Base.astro";
     text-align: center;
     padding-top: 3rem;
   }
-  .head h1 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin: 0 0 0.35rem;
-  }
   .sub {
     font-style: italic;
-    font-size: 0.92rem;
     color: var(--text-secondary);
-    margin: 0;
   }
   .flourish {
     border: none;
     border-top: 1px solid var(--border-strong);
     width: 5rem;
-    margin: 1.6rem auto 2rem;
+    margin: 1.6rem auto 2.4rem;
   }
-  .empty {
+  .intro {
+    max-width: 34rem;
+    margin: 0 auto 3rem;
     text-align: center;
+    color: var(--text-secondary);
     font-style: italic;
-    color: var(--text-muted);
-    padding: 2rem 0 4rem;
+  }
+  .toc {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+  .part {
+    margin-bottom: 2.4rem;
+  }
+  .part h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    -webkit-text-stroke: 0.3px currentColor;
+    margin: 0 0 0.2rem;
+  }
+  .part-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 400;
+    -webkit-text-stroke: 0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .part-label:empty {
+    display: none;
+  }
+  .blurb {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 0 0 0.8rem;
+  }
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0.6rem 0 0;
+  }
+  .toc li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.2rem 0;
+  }
+  .num {
+    flex: 0 0 1.6rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  .toc a {
+    text-decoration: none;
+  }
+  .toc a:hover {
+    text-decoration: underline;
   }
 </style>

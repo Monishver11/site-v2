@@ -51,7 +51,7 @@ The script is idempotent with catch-up, so running it repeatedly is a no-op and 
 3. ~~Zettel~~ DONE 2026-07-20. 93 stubs in `vault/posts/` with **216 curated links across 92 of them** (only nyu-grad isolated, correctly). Graph, backlinks, search verified.
    The link graph lives in `tooling/post-links.json` (threads = ordered reading sequences giving prev/next; bridges = conceptual pairs with reasons; zettels). Edit that file and re-run `python3 tooling/make_stubs.py`.
    **Regenerating is safe**: anything below the `<!-- links below this line are kept when regenerating -->` marker in a stub is preserved, so add your own links there freely.
-4. Build the Book section: ordered manifest of the ML Theory posts (parts/chapters, sidebar tree, prev/next). User wants involvement in the ordering.
+4. ~~Book section~~ DONE 2026-07-20. `/book/` is the TOC; the 60 ML Theory posts get book chrome (part/chapter crumb + prev/next) on their existing `/blog/` pages, no duplicate URLs. Structure and ordering user-approved. Manifest is `astro/src/data/book.json`; edit it to reorder, the TOC build-fails on any missing slug. New "Misc" category holds rl-intro and ds1. See progress.md.
 5. Reads content: user will supply their list (reads.json holds it: title/href/by/note fields).
 6. Weekly review automation: draft from daily logs for user to edit, publish to /reviews.
 7. Prod flip. Also at flip: re-run `BLOG_BASE=https://monishver11.github.io python3 tooling/make_stubs.py`, update `SITE_BASE_URL` in deploy.yml, and fix the one hardcoded blog URL in `vault/index.md` (it is prose, so no generator owns it).

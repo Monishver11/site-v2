@@ -3,7 +3,7 @@ title: "Randomized Weighted Majority Algorithm"
 date: 2025-01-29
 description: "Learn how the Randomized Weighted Majority (RWM) Algorithm leverages probabilistic prediction to minimize regret and defend against adversarial strategies in online learning environments."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 The **Randomized Weighted Majority (RWM) algorithm** is an extension of the **deterministic Weighted Majority (WM) algorithm**, designed to overcome its limitations in adversarial settings, particularly in the **zero-one loss** scenario. This post explores why the deterministic approach struggles, how randomization helps, and what makes the RWM algorithm effective.
 

@@ -13,6 +13,7 @@ const blog = defineCollection({
       "GPU & Performance",
       "Big Data Systems",
       "Projects",
+      "Misc",
     ]),
     draft: z.boolean().default(false),
   }),

@@ -1,0 +1,118 @@
+{
+  "title": "Machine Learning, from first principles",
+  "subtitle": "The ML theory posts, reorganised into reading order",
+  "intro": "These started as notes written while I worked through the material. Published in the order I wrote them, they interleave several threads at once. Here they are regrouped so each thread runs start to finish.",
+  "parts": [
+    {
+      "name": "Front matter",
+      "chapters": ["preface-ml"]
+    },
+    {
+      "name": "Foundations",
+      "blurb": "What the subject is, and the mathematics it assumes.",
+      "chapters": [
+        "intro-to-ml",
+        "ml-history",
+        "linear-algebra",
+        "multivariate-calculus",
+        "probability-1",
+        "probability-2"
+      ]
+    },
+    {
+      "name": "The learning problem",
+      "blurb": "The setup, the objective, and why minimising it on a sample is a leap of faith.",
+      "chapters": ["supervised-learning", "erm", "loss-functions"]
+    },
+    {
+      "name": "Optimization",
+      "blurb": "How the objective actually gets minimised.",
+      "chapters": [
+        "gradient-descent",
+        "gd-convergence",
+        "gd-tips",
+        "sgd",
+        "sgd-tips"
+      ]
+    },
+    {
+      "name": "Regularization",
+      "blurb": "Controlling model complexity, and why L1 is sparse.",
+      "chapters": ["regularization", "l1-l2-reg-indepth"]
+    },
+    {
+      "name": "Support vector machines and kernels",
+      "blurb": "From margins to the dual, and the trick that buys a huge feature space for free.",
+      "chapters": [
+        "max-margin-classifier",
+        "subgradient",
+        "svm",
+        "dual-problem",
+        "svm-dual-problem",
+        "feature-maps",
+        "kernel-trick",
+        "svm-solution-span-of-data"
+      ]
+    },
+    {
+      "name": "Probabilistic modeling",
+      "blurb": "Estimating parameters, and the generative view.",
+      "chapters": [
+        "probabilistic-modeling",
+        "mle",
+        "generative-models",
+        "nb-continuous-features",
+        "multivariate-gnb"
+      ]
+    },
+    {
+      "name": "Bayesian methods",
+      "blurb": "Treating the parameter as a random variable, and what that buys.",
+      "chapters": [
+        "bayesian-ml",
+        "bayes-point-estimate",
+        "bayes-decision-theory",
+        "bayes-conditional-models",
+        "gaussian-regression"
+      ]
+    },
+    {
+      "name": "Multiclass and structured prediction",
+      "blurb": "More than two labels, then outputs with internal structure.",
+      "chapters": [
+        "multiclass",
+        "multiclass-loss",
+        "multiclass-svm",
+        "structured-prediction",
+        "structured-perceptron-svm"
+      ]
+    },
+    {
+      "name": "Trees and ensembles",
+      "blurb": "The first nonlinear classifier, and why averaging many of them works.",
+      "chapters": [
+        "decision-trees",
+        "decision-trees-classification",
+        "intro-to-ensemble-methods",
+        "bagging",
+        "random-forest",
+        "adaboost"
+      ]
+    },
+    {
+      "name": "Gradient boosting",
+      "blurb": "Additive modelling, and the generalisation that made boosting a workhorse.",
+      "chapters": [
+        "fsam",
+        "intro-gradient-boosting",
+        "gradient-boosting",
+        "binomial-boost",
+        "gb-in-practice"
+      ]
+    },
+    {
+      "name": "Closing",
+      "chapters": ["wrapping-ml-basics"]
+    }
+  ]
+}

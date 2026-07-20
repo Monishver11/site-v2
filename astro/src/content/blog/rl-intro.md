@@ -3,7 +3,7 @@ title: "Reinforcement Learning - An Introductory Guide"
 date: 2025-01-27
 description: "Explore the foundations of intelligence, decision-making principles, and their application in reinforcement learning."
 tags: [ML]
-category: "ML Theory"
+category: "Misc"
 ---
 Reinforcement Learning (RL) is a fascinating field that focuses on teaching agents how to make decisions based on their environment. The agent's goal is to learn a strategy that maximizes a cumulative reward over time by interacting with its surroundings. But before we dive into the details of RL, let’s explore the fundamental concepts of decision-making and intelligence.
 

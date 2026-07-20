@@ -3,7 +3,7 @@ title: "Follow the Leader (FL) and Follow the Perturbed Leader (FPL) in Online L
 date: 2025-02-01
 description: "Discover how Follow the Leader (FL) and Follow the Perturbed Leader (FPL) work in online learning, their mathematical foundations, and how perturbations help achieve better stability and regret bounds."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 Online learning is a fascinating area of machine learning where an agent makes sequential decisions, aiming to minimize loss over time. Unlike traditional supervised learning, where a model is trained on a fixed dataset, online learning involves continuously adapting based on feedback from past decisions. One of the simplest and most natural strategies in this setting is **Follow the Leader (FL)**—a method that always picks the action that has performed best in hindsight. 
 

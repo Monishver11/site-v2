@@ -3,7 +3,7 @@ title: "Doubling Trick - A Clever Strategy to Handle Unknown Horizons"
 date: 2025-01-25
 description: "Discover how the Doubling Trick enables online algorithms to adapt to unknown horizons, maintaining competitive regret bounds."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 Online learning algorithms often rely on carefully chosen parameters, such as the learning rate ($\eta$), to achieve good performance. However, many theoretical analyses assume that the total time horizon ($T$) is known in advance. In practical scenarios, this is rarely the case. 
 

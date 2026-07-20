@@ -3,7 +3,7 @@ title: "Understanding the Weighted Majority Algorithm in Online Learning"
 date: 2025-01-23
 description: "Explore how the Weighted Majority Algorithm achieves robust bounds for adversarial settings by adapting expert weights with every mistake."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 **The Weighted Majority Algorithm: A Powerful Online Learning Technique**
 

@@ -3,7 +3,7 @@ title: "Distributed Systems - Lecture 1"
 date: 2026-01-25
 description: "Distributed Systems Course at NYU Courant - Personal Notes 1"
 tags: []
-category: "ML Theory"
+category: "Misc"
 ---
 A distributed system consists of one-or-more processes that interact with each other, and implement some functionality. In this class we assume that each process fails independently, that is, the failure of a process $p$ does not imply failure of process $q$. Achieving independence in practice is challenging (you might want to think about why), and is something one must consider when deploying distributed systems. For most of this class we will assume that processes communicate by sending and receiving messages over a network[^1], which the literature refers to as **message passing**. The behavior of a distributed system is dictated by what protocol it is running. A protocol is analogous to an algorithm, and some of the papers (and perhaps the class) will use the term algorithm and protocol interchangeably.
 

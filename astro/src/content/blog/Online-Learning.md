@@ -3,7 +3,7 @@ title: "Online Learning in ML - A Beginner’s Guide to Adaptive Learning"
 date: 2025-01-23
 description: "Learn how online learning transforms machine learning by handling dynamic, real-time data and adversarial scenarios. Explore its advantages, real-world applications, and key concepts like regret minimization and the Halving Algorithm in this beginner-friendly guide to adaptive AI."
 tags: [ML, Math]
-category: "ML Theory"
+category: "Misc"
 ---
 In this post, we’ll dive into one of the foundational topics that was discussed in the first class of my advanced machine learning course: online learning. This course is centered on theoretical insights and encourages students to think critically, experiment fearlessly, and embrace confusion as a stepping stone toward innovation. Let’s explore how online learning fits into the broader landscape of machine learning and why it’s such a powerful concept.
 

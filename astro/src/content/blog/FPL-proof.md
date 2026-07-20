@@ -3,7 +3,7 @@ title: "My Understanding of \"Efficient Algorithms for Online Decision Problems\
 date: 2025-02-05
 description: "A breakdown of Follow the Perturbed Leader (FPL) from Kalai & Vempala’s (2005) paper, \"Efficient Algorithms for Online Decision Problems.\" This blog explores how FPL improves online decision-making, minimizes regret, and extends to structured problems like shortest paths and adaptive Huffman coding."
 tags: [ML, Paper]
-category: "ML Theory"
+category: "Misc"
 ---
 Here is the link to the paper - [Efficient Algorithms for Online Decision Problems](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/2005-Efficient_Algorithms_for_Online_Decision_Problems.pdf). I highly recommend reading through the entire paper once or twice before continuing with this blog.
 
