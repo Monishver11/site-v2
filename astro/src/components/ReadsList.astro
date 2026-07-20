@@ -1,0 +1,81 @@
+---
+import reads from "../data/reads.json";
+
+interface Props {
+  technical: boolean;
+}
+const { technical } = Astro.props;
+const items = technical ? reads.technical : reads.nonTechnical;
+---
+
+<div class="tabs">
+  <a href="/reads/" class:list={{ active: technical }}>Technical</a>
+  <a href="/reads/non-technical/" class:list={{ active: !technical }}
+    >Non-technical</a
+  >
+</div>
+
+{
+  items.length === 0 ? (
+    <p class="empty">
+      The shelf is being stocked &mdash; books, blogs, and reads I loved are
+      on their way here.
+    </p>
+  ) : (
+    <ul class="shelf">
+      {items.map((item: any) => (
+        <li>
+          <a href={item.href}>{item.title}</a>
+          {item.by && <span class="by"> &mdash; {item.by}</span>}
+          {item.note && <p class="note">{item.note}</p>}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0 0 1.8rem;
+    font-size: 0.95rem;
+  }
+  .tabs a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .tabs a:hover {
+    color: var(--text);
+  }
+  .tabs a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .empty {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-muted);
+    padding: 2rem 0 4rem;
+  }
+  .shelf {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .shelf li {
+    margin-bottom: 1rem;
+  }
+  .by {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  .note {
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+</style>

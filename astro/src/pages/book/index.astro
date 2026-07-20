@@ -1,0 +1,49 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Book · Monishver Chandrasekaran"
+  description="ML fundamentals, written from first principles, as an ordered book."
+>
+  <section class="head">
+    <h1>Book</h1>
+    <p class="sub">ML fundamentals, from first principles, in reading order</p>
+    <hr class="flourish" />
+  </section>
+  <p class="empty">
+    My fifty-plus posts on machine learning theory are being assembled into
+    an ordered book &mdash; chapters, parts, and prev/next navigation. It
+    arrives with the full archive port.
+  </p>
+</Base>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .head h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+  }
+  .sub {
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.6rem auto 2rem;
+  }
+  .empty {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-muted);
+    padding: 2rem 0 4rem;
+  }
+</style>

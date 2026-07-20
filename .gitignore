@@ -1,0 +1,10 @@
+node_modules/
+astro/dist/
+quartz/public/
+quartz/.quartz-cache/
+.DS_Store
+
+# Private: daily logs never leave this machine (Quartz also ignores them,
+# but they should not even reach the public repo).
+vault/daily/*
+!vault/daily/README.md

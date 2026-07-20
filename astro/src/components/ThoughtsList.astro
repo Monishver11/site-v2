@@ -1,0 +1,79 @@
+---
+import thoughts from "../data/thoughts.json";
+
+interface Props {
+  mine: boolean;
+}
+const { mine } = Astro.props;
+
+const items = thoughts.filter((t) => t.mine === mine);
+const years = [...new Set(items.map((t) => t.year))].sort((a, b) => b - a);
+---
+
+<div class="tabs">
+  <a href="/thoughts/" class:list={{ active: mine }}>Mine</a>
+  <a href="/thoughts/others/" class:list={{ active: !mine }}>Others</a>
+</div>
+
+{
+  years.map((year) => (
+    <section class="year">
+      <h2>{year}</h2>
+      {items
+        .filter((t) => t.year === year)
+        .map((t) => (
+          <figure class="quote">
+            <blockquote set:html={t.text.replaceAll("\n\n", "<br/><br/>")} />
+            {t.author && <figcaption>&mdash; {t.author}</figcaption>}
+          </figure>
+        ))}
+    </section>
+  ))
+}
+
+<style>
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0 0 1.6rem;
+    font-size: 0.95rem;
+  }
+  .tabs a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .tabs a:hover {
+    color: var(--text);
+  }
+  .tabs a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .year h2 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    -webkit-text-stroke: 0.3px currentColor;
+    margin: 2rem 0 1rem;
+  }
+  .quote {
+    margin: 0 0 1.4rem;
+  }
+  .quote blockquote {
+    margin: 0;
+    padding: 0.1rem 0 0.1rem 1.1rem;
+    border-left: 2px solid var(--border-strong);
+    color: var(--text);
+    font-size: 0.97rem;
+    line-height: 1.6;
+  }
+  .quote figcaption {
+    padding-left: 1.1rem;
+    margin-top: 0.3rem;
+    font-size: 0.83rem;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+</style>

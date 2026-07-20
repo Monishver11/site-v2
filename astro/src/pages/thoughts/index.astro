@@ -1,0 +1,53 @@
+---
+import Base from "../../layouts/Base.astro";
+import ThoughtsList from "../../components/ThoughtsList.astro";
+---
+
+<Base
+  title="Thoughts · Monishver Chandrasekaran"
+  description="Ruminations and realizations as I walk through my journey of life."
+>
+  <section class="head">
+    <h1>Thoughts</h1>
+    <p class="sub">Ruminations and realizations, penned as they arrive</p>
+    <hr class="flourish" />
+  </section>
+  <p class="intro">
+    These notions are ruminations and realizations as I walk through my
+    journey of life. Some are mine; some belong to others and resonated
+    deeply enough to keep. Everyone sees life through their unique lens, and
+    this is my way of sharing what mine has caught. If you have thoughts that
+    are raw, genuine, and come from a place that doesn't intend harm &mdash;
+    express them.
+  </p>
+  <ThoughtsList mine={true} />
+</Base>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .head h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+  }
+  .sub {
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.6rem auto 2rem;
+  }
+  .intro {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0 0 2rem;
+  }
+</style>

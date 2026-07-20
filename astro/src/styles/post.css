@@ -1,0 +1,154 @@
+/* Article typography + sidenotes. Loaded by the post layout. */
+.prose {
+  counter-reset: sidenote;
+}
+
+.prose h2 {
+  font-size: 1.45rem;
+  font-weight: 500;
+  margin: 2.4rem 0 0.85rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 1.9rem 0 0.65rem;
+}
+.prose h4 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-style: italic;
+  margin: 1.6rem 0 0.55rem;
+}
+.prose h5,
+.prose h6 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin: 1.4rem 0 0.5rem;
+}
+.prose :is(h2, h3, h4, h5, h6) strong {
+  font-weight: inherit;
+}
+/* Charter/Georgia have no medium weight (500 -> regular, 600 -> full bold),
+   so a hairline stroke gives the in-between heading weight. */
+.prose :is(h2, h3, h4, h5, h6) {
+  -webkit-text-stroke: 0.3px currentColor;
+}
+.prose p {
+  margin: 0 0 1.1rem;
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.4rem auto;
+  border-radius: 4px;
+}
+.prose .caption {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: -0.7rem 0 1.4rem;
+}
+.prose blockquote {
+  margin: 1.4rem 0;
+  padding: 0.1rem 0 0.1rem 1.1rem;
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.2rem auto;
+}
+.prose table {
+  border-collapse: collapse;
+  margin: 1.4rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.7rem;
+  text-align: left;
+}
+.prose th {
+  background: var(--code-bg);
+}
+.prose pre {
+  background: #f6f5f0 !important;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.9rem 1.1rem;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin: 1.4rem 0;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.3rem 0;
+  margin: 1.3rem 0;
+}
+.prose .katex {
+  font-size: 1.04em;
+}
+
+/* Sidenotes: numbered margin notes on wide screens, tap-to-expand inline
+   on narrow ones. Pure CSS (checkbox toggle). */
+.sidenote-number {
+  counter-increment: sidenote;
+  cursor: pointer;
+}
+.sidenote-number::after {
+  content: counter(sidenote);
+  vertical-align: super;
+  font-size: 0.72em;
+  color: var(--accent);
+  padding-left: 1px;
+}
+.sidenote-toggle {
+  display: none;
+}
+.sidenote {
+  color: var(--sidenote);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.sidenote::before {
+  content: counter(sidenote) ". ";
+  color: var(--accent);
+}
+@media (min-width: 1360px) {
+  .sidenote {
+    float: right;
+    clear: right;
+    width: 215px;
+    margin-right: -255px;
+    margin-top: 0.25rem;
+    margin-bottom: 0.6rem;
+    text-align: left;
+  }
+}
+@media (max-width: 1359.98px) {
+  .sidenote {
+    display: none;
+  }
+  .sidenote-toggle:checked ~ .sidenote {
+    display: block;
+    margin: 0.6rem 0;
+    padding: 0.5rem 0.8rem;
+    background: var(--code-bg);
+    border-radius: 6px;
+  }
+}

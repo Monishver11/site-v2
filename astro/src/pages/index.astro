@@ -1,0 +1,181 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Monishver Chandrasekaran"
+  description="A space for journaling my learnings, career, thoughts, and experiences in this amazing ride of life."
+>
+  <section class="hero">
+    <h1>Monishver Chandrasekaran</h1>
+    <p class="tagline">Hello there, and welcome!</p>
+    <hr class="flourish" />
+  </section>
+
+  <section class="about">
+    <img
+      class="profile"
+      src="/img/prof_pic_cmp.jpg"
+      alt="Monishver at Bull Hill Full Loop, Cold Spring, NY"
+    />
+    <h2>About Me</h2>
+    <p>
+      I'm a graduate student at NYU's Courant Institute of Mathematical
+      Sciences, wrapping up my Master's in Computer Science in May 2026.
+      Presently, I care a lot about building systems that work well&mdash;data
+      pipelines, ML infrastructure, things that run fast and don't break.
+      Before grad school, I spent two years as a Data Engineer at IBM, where I
+      got really into the intersection of data systems and engineering.
+    </p>
+    <p>
+      This site is my space to share what I'm learning, thinking about, and
+      building. You'll find technical deep dives and notes in the
+      <a href="/blog/">Blog</a> section (ML theory, big data systems, ML
+      performance engineering), and more personal reflections in
+      <a href="/thoughts/">Thoughts</a>, where I write about life, philosophy,
+      and document how my thoughts evolve.
+    </p>
+    <p>
+      Right now, I'm taking courses in GPU programming, realtime and
+      distributed systems, and ML infrastructure at NYU. I've been writing
+      CUDA kernels, learning about MapReduce and fault tolerance, and building
+      a deep learning framework from scratch. It's all connecting back to what
+      I built at IBM, but now I actually understand <strong>why</strong>
+      things are designed the way they are.
+    </p>
+    <h2>Beyond the technical stuff</h2>
+    <p>
+      Outside of work and school, I'm an avid tennis player, and I spend time
+      thinking about different aspects of life. I also explore my creative
+      side through art, you can check out some of my work on Instagram at
+      <a
+        href="https://instagram.com/knotted.arts"
+        target="_blank"
+        rel="noopener">@knotted.arts</a
+      >.
+    </p>
+    <p>
+      I value curiosity, meaningful work, and genuine connections. This site
+      reflects that; it's not just about the technical journey, but also about
+      growth, reflection, and the process of figuring things out. Whether
+      you're here for the technical content, personal musings, or just passing
+      through, I hope you find something worthwhile.
+    </p>
+    <p>
+      If anything resonates with you, feel free to reach out. I'd love to hear
+      your story. Here's to building things that matter and learning along the
+      way &#129346;.
+    </p>
+    <p class="signoff">
+      <strong>Best,</strong><br />
+      <strong>Monishver</strong>
+    </p>
+  </section>
+
+  <section class="contact">
+    <p class="icons">
+      <a
+        href="mailto:monishverchandrasekaran@gmail.com"
+        aria-label="Email"
+        title="Email"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="m2 7 10 7L22 7"></path>
+        </svg>
+      </a>
+      <a
+        href="https://www.linkedin.com/in/monishver"
+        target="_blank"
+        rel="noopener"
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z"
+          ></path>
+        </svg>
+      </a>
+    </p>
+    <p class="reach">
+      The best way to reach me is via email, followed by LinkedIn.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    text-align: center;
+    padding-top: 4.5rem;
+  }
+  .hero h1 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.4rem;
+  }
+  .tagline {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.75rem auto 2.5rem;
+  }
+  .about h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.6rem 0 0.7rem;
+  }
+  .about p {
+    margin: 0 0 1.15rem;
+  }
+  .profile {
+    float: right;
+    width: 235px;
+    max-width: 45%;
+    height: auto;
+    margin: 0.4rem 0 0.9rem 1.4rem;
+    border-radius: 6px;
+  }
+  .signoff {
+    line-height: 1.5;
+  }
+  .contact {
+    clear: both;
+    margin-top: 2.75rem;
+    text-align: center;
+  }
+  .icons {
+    margin: 0 0 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+  .icons a {
+    color: var(--text-secondary);
+    display: flex;
+  }
+  .icons a:hover {
+    color: var(--accent);
+  }
+  .reach {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+</style>

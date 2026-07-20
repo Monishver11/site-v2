@@ -1,0 +1,48 @@
+---
+import { CATEGORIES } from "../lib/categories";
+
+interface Props {
+  active?: string;
+}
+const { active } = Astro.props;
+---
+
+<nav class="cats">
+  {
+    CATEGORIES.map((cat, i) => (
+      <>
+        {i > 0 && <span class="sep">&middot;</span>}
+        <a
+          href={`/blog/category/${cat.slug}/`}
+          class:list={{ active: active === cat.slug }}
+        >
+          {cat.label}
+        </a>
+      </>
+    ))
+  }
+</nav>
+
+<style>
+  .cats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: -0.9rem 0 1.8rem;
+    font-size: 0.86rem;
+  }
+  .cats a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+  .cats a:hover {
+    color: var(--accent);
+  }
+  .cats a.active {
+    color: var(--accent);
+  }
+  .sep {
+    color: var(--border-strong);
+  }
+</style>

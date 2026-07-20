@@ -1,0 +1,36 @@
+---
+interface Props {
+  active: "written" | "drawings";
+}
+const { active } = Astro.props;
+---
+
+<div class="tabs">
+  <a href="/blog/" class:list={{ active: active === "written" }}>Written</a>
+  <a href="/blog/drawings/" class:list={{ active: active === "drawings" }}
+    >Excalidraw</a
+  >
+</div>
+
+<style>
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0 0 2.2rem;
+    font-size: 0.95rem;
+  }
+  .tabs a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .tabs a:hover {
+    color: var(--text);
+  }
+  .tabs a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+</style>

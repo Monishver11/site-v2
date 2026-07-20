@@ -1,0 +1,122 @@
+---
+import "../styles/tokens.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Monishver Chandrasekaran" } = Astro.props;
+
+const nav = [
+  { href: "/", label: "About" },
+  { href: "/blog/", label: "Blog" },
+  { href: "/book/", label: "Book" },
+  { href: "/notes/", label: "Notes" },
+  { href: "/thoughts/", label: "Thoughts" },
+  { href: "/reads/", label: "Reads" },
+  { href: "/reviews/", label: "Reviews" },
+];
+
+const path = Astro.url.pathname;
+
+const updated = new Date().toLocaleString("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <header>
+      <nav>
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              class:list={{
+                active:
+                  item.href === "/"
+                    ? path === "/"
+                    : path.startsWith(item.href),
+              }}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p class="colophon">
+        &copy; {new Date().getFullYear()} Monishver Chandrasekaran &middot;
+        Last updated {updated} ET
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  header {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 2rem 1.25rem 0;
+    width: 100%;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.35rem;
+    font-size: 0.9rem;
+  }
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+  nav a:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  nav a.active {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--accent);
+  }
+  main {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    width: 100%;
+    flex: 1;
+  }
+  footer {
+    max-width: var(--content-width);
+    margin: 3.5rem auto 0;
+    padding: 1.25rem 1.25rem 2rem;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .colophon {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 0;
+  }
+</style>

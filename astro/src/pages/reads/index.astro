@@ -1,0 +1,40 @@
+---
+import Base from "../../layouts/Base.astro";
+import ReadsList from "../../components/ReadsList.astro";
+---
+
+<Base
+  title="Reads · Monishver Chandrasekaran"
+  description="Books, blogs, and reads I enjoyed."
+>
+  <section class="head">
+    <h1>Reads</h1>
+    <p class="sub">Books, blogs, and things I enjoyed</p>
+    <hr class="flourish" />
+  </section>
+  <ReadsList technical={true} />
+</Base>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .head h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+  }
+  .sub {
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.6rem auto 2rem;
+  }
+</style>

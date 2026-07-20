@@ -1,0 +1,74 @@
+---
+/* Buttondown signup, Aleksa-style box at the end of each post. */
+const BUTTONDOWN_USERNAME = "monishver";
+---
+
+<section class="subscribe">
+  <p class="pitch">
+    Enjoyed this post? Get an email when the next one lands. No noise,
+    unsubscribe anytime.
+  </p>
+  <form
+    action={`https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USERNAME}`}
+    method="post"
+    target="_blank"
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="you@example.com"
+      required
+      aria-label="Email address"
+    />
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<style>
+  .subscribe {
+    margin-top: 3rem;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .pitch {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.9rem;
+  }
+  form {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  input {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg-raised);
+    color: var(--text);
+    width: min(210px, 100%);
+  }
+  input:focus {
+    outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-color: var(--accent);
+  }
+  button {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    padding: 0.45rem 1.1rem;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+</style>

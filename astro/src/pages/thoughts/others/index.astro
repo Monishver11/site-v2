@@ -1,0 +1,49 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ThoughtsList from "../../../components/ThoughtsList.astro";
+---
+
+<Base
+  title="Thoughts of others · Monishver Chandrasekaran"
+  description="Words from others that resonated."
+>
+  <section class="head">
+    <h1>Thoughts</h1>
+    <p class="sub">Ruminations and realizations, penned as they arrive</p>
+    <hr class="flourish" />
+  </section>
+  <p class="intro">
+    Words that aren't mine but stayed with me &mdash; from books, films,
+    friends, and strangers on the internet.
+  </p>
+  <ThoughtsList mine={false} />
+</Base>
+
+<style>
+  .head {
+    text-align: center;
+    padding-top: 3rem;
+  }
+  .head h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+  }
+  .sub {
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flourish {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    width: 5rem;
+    margin: 1.6rem auto 2rem;
+  }
+  .intro {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0 0 2rem;
+  }
+</style>
