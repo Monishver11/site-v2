@@ -47,9 +47,15 @@ The ~52 ML posts, reorganized into parts/chapters (intro ML, optimization, kerne
 - Reviews: automation drafts from daily logs, user edits, then publish. Cadence: weekly proposed, TBC.
 - 12am job: vault housekeeping only (archive + reset daily note), publishes nothing.
 
+## Settled since (see progress.md for details)
+
+- Review cadence: weekly, automation drafts + user edits.
+- Taxonomy confirmed: ML Theory / GPU & Performance / Big Data Systems / Projects.
+- Visual system: light only, #FCFCF9 + clay #B5533C, serif, classical, 50rem column.
+- Staging live at monishver11.github.io/site-v2 (2026-07-20). See HANDOFF.md for state + next steps.
+
 ## Open items
 
-- Review cadence: weekly vs monthly (weekly proposed).
-- Blog topic taxonomy replacing course categories (proposal: ML Theory, GPU/Performance, Big Data Systems, Projects) - not yet confirmed.
-- Visual system: palette, typography, dark mode (discussion in progress).
 - Excalidraw pipeline: draw in Obsidian excalidraw plugin, export SVG/PNG into gallery tab + embed in posts.
+- Redirect strategy for old permalinks (/blog/:year/:title/) at prod flip.
+- Book chapter ordering (user involvement wanted).

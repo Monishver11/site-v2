@@ -1,5 +1,7 @@
 # Site v2 progress
 
+> 2026-07-20: Session handoff. Current state + next steps live in HANDOFF.md (read that first in a new session). This file remains the decision log, newest entries near the top of their date section.
+
 ## 2026-07-19: Context gathering (no code yet)
 
 ### Current site audit (monishver11.github.io, al-folio Jekyll)
@@ -107,6 +109,15 @@
 - Reviews: /reviews/ intro + empty state (weekly cadence).
 - Book: /book/ placeholder until the ML posts port.
 - Build passes, 16 pages. Every nav link now resolves.
+
+## 2026-07-20: Staging deploy (done, LIVE)
+- Repo: github.com/Monishver11/site-v2 (public). Live at https://monishver11.github.io/site-v2/ (user site untouched).
+- Workflow .github/workflows/deploy.yml: Astro build + Quartz build into dist/notes + tooling/fix-base.mjs rewrites root-relative URLs for the /site-v2 prefix (skips /notes; Quartz emits relative links + NOTES_BASE_URL env). Deploys via actions/deploy-pages.
+- Prod flip later: set BASE_PATH/NOTES_BASE_URL to root values, remove fix-base step, push to monishver11.github.io repo (or repoint Pages).
+- gh needed `workflow` scope (user authorized device flow). Pages enabled via API with build_type=workflow.
+- vault/daily/* gitignored (never reaches the public repo); quartz/ vendored (its .git removed), upgrades by re-clone.
+- Verified live: about, kernel-trick (0 katex errors, sidenote, giscus, subscribe box), notes (graph/search/wikilinks).
+- CI note: actions pin @v4 (node20 deprecation warnings, harmless for now).
 
 ## 2026-07-19: Blog feedback round 2 (done)
 - Category pages flipped to newest-first; numbering + "in reading order" removed (ordering belongs to the Book).
